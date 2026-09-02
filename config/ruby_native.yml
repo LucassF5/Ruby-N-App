@@ -96,9 +96,14 @@ tabs:
   - title: Home
     path: /
     icon: house
+
   - title: Profile
     path: /profile
     icon: person
+
+  - title: Settings
+    path: /settings
+    icon: gear
 
   # Per-tab options (add to any tab above):
   #
