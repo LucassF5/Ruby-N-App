@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :shifts, except: [:show]
 
   get "calendar", to: "calendar#show", as: :calendar
+  get "calendar/:date", to: "calendar#day", as: :calendar_day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
 
   # Defines the root path route ("/")
   root "shifts#index"

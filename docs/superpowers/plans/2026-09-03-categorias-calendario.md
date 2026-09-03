@@ -1644,13 +1644,14 @@ git commit -m "Add optional category and return_to support to Shifts flow"
 ### Task 7: Calendar month grid
 
 **Files:**
+- Modify: `config/routes.rb`
 - Create: `app/controllers/calendar_controller.rb`
 - Create: `app/views/calendar/show.html.erb`
 - Test: `test/controllers/calendar_controller_test.rb`
 
 **Interfaces:**
-- Consumes: `Shift`/`Category` (Tasks 2/3/5), `categories_path` (Task 5, for the "Gerenciar categorias" link), the `calendar` route/`calendar_path` helper (already added to `config/routes.rb` in Task 5 — this task does not touch `routes.rb`, it makes that route's destination real).
-- Produces: a working `calendar#show` (this is what Task 5/6's `calendar_path` links, previously dangling at a route with no controller, now resolve to), `@month` (a `Date`, first day of the displayed month), `@weeks` (array of 7-day `Date` arrays), `@colors_by_day` (`Hash` of `Date => Array<String>` hex colors) — all `CalendarController` instance variables other tasks don't touch.
+- Consumes: `Shift`/`Category` (Tasks 2/3/5), `categories_path` (Task 5, for the "Gerenciar categorias" link), the `calendar` route/`calendar_path` helper (already added to `config/routes.rb` in Task 5).
+- Produces: a working `calendar#show` (this is what Task 5/6's `calendar_path` links, previously dangling at a route with no controller, now resolve to), the `calendar_day` route/`calendar_day_path` helper (added in this task's Step 3b so this task's own view can render — its destination, `calendar#day`, is what Task 8 implements), `@month` (a `Date`, first day of the displayed month), `@weeks` (array of 7-day `Date` arrays), `@colors_by_day` (`Hash` of `Date => Array<String>` hex colors) — all `CalendarController` instance variables other tasks don't touch.
 
 - [ ] **Step 1: Write the failing controller test**
 
@@ -1690,6 +1691,18 @@ Expected: FAIL — NOT a routing error this time (the `calendar` route already e
 - [ ] **Step 3: Confirm the route (already added by Task 5)**
 
 Task 5 already added `get "calendar", to: "calendar#show", as: :calendar` to `config/routes.rb` (it was needed early so `categories/index.html.erb`'s `calendar_path` link would render). Open `config/routes.rb` and confirm that line is present — do not add it again. It has pointed at `calendar#show` since Task 5; this task is what makes that destination real.
+
+- [ ] **Step 3b: Add the calendar_day route now (not in Task 8)**
+
+The view you're about to create in Step 5 links every day cell through `calendar_day_path(date: ...)` — that's this task's own view template, rendered by this task's own tests. Exactly like the `calendar_path` situation Task 5 hit: `link_to` needs the named route HELPER to exist to render at all, not just a working destination. If this route isn't defined yet, `CalendarControllerTest`'s own tests fail with `undefined method 'calendar_day_path'` the moment `show.html.erb` renders — do not work around this with a fake helper method, a stub, or anything on `ApplicationController`; add the real route.
+
+In `config/routes.rb`, add right after the `calendar` route:
+
+```ruby
+  get "calendar/:date", to: "calendar#day", as: :calendar_day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
+```
+
+This is safe even though `CalendarController#day` doesn't exist until Task 8 — Rails resolves a route's controller/action lazily, only when a request actually dispatches to it, and nothing does until Task 8's tests run. Task 8 will confirm this line is already here rather than add it again (mirroring how this task already treats the `calendar` route from Task 5).
 
 - [ ] **Step 4: Create the controller**
 
@@ -1786,7 +1799,7 @@ Expected: all PASS — this also confirms Task 5's `categories/index.html.erb` a
 - [ ] **Step 8: Commit**
 
 ```bash
-git add app/controllers/calendar_controller.rb app/views/calendar/show.html.erb test/controllers/calendar_controller_test.rb
+git add config/routes.rb app/controllers/calendar_controller.rb app/views/calendar/show.html.erb test/controllers/calendar_controller_test.rb
 git commit -m "Add calendar month grid view"
 ```
 
@@ -1795,14 +1808,13 @@ git commit -m "Add calendar month grid view"
 ### Task 8: Calendar day modal (Turbo Frame)
 
 **Files:**
-- Modify: `config/routes.rb`
 - Modify: `app/controllers/calendar_controller.rb`
 - Create: `app/views/calendar/day.html.erb`
 - Test: `test/controllers/calendar_controller_test.rb`
 
 **Interfaces:**
-- Consumes: `calendar_path` (Task 7), `shifts_path` and `return_to`/`category_id` handling (Task 6), `Category`/`Shift` (Tasks 2/3/5).
-- Produces: `calendar_day_path(date: "YYYY-MM-DD")` — this is what Task 7's day links and this task's own "Fechar"/remove links/redirects target.
+- Consumes: `calendar_path` (Task 7), the `calendar_day` route/`calendar_day_path` helper (already added to `config/routes.rb` in Task 7's Step 3b), `shifts_path` and `return_to`/`category_id` handling (Task 6), `Category`/`Shift` (Tasks 2/3/5).
+- Produces: a working `calendar#day` — this is what Task 7's day links, previously dangling at a route with no controller action, now resolve to; and this task's own "Fechar"/remove links/redirects target `calendar_day_path(date: "YYYY-MM-DD")`.
 
 - [ ] **Step 1: Write the failing controller tests**
 
@@ -1830,15 +1842,11 @@ Append to `test/controllers/calendar_controller_test.rb` (inside the class, befo
 - [ ] **Step 2: Run and confirm failure**
 
 Run: `bin/rails test test/controllers/calendar_controller_test.rb`
-Expected: FAIL with a routing error (`calendar_day_url` undefined).
+Expected: FAIL — NOT a routing error (the `calendar_day` route already exists, added in Task 7). The failure is `AbstractController::ActionNotFound` or similar ("The action 'day' could not be found for CalendarController"), because the route points at an action that doesn't exist yet.
 
-- [ ] **Step 3: Add the route**
+- [ ] **Step 3: Confirm the route (already added by Task 7)**
 
-In `config/routes.rb`, add right after the `calendar` route:
-
-```ruby
-  get "calendar/:date", to: "calendar#day", as: :calendar_day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
-```
+Task 7's Step 3b already added `get "calendar/:date", to: "calendar#day", as: :calendar_day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }` to `config/routes.rb`. Open the file and confirm that line is present — do not add it again.
 
 - [ ] **Step 4: Add the controller action**
 
@@ -1933,6 +1941,6 @@ Run: `bin/dev` (or `bin/rails server`), open `/calendar`, click a day, confirm t
 - [ ] **Step 9: Commit**
 
 ```bash
-git add config/routes.rb app/controllers/calendar_controller.rb app/views/calendar/day.html.erb test/controllers/calendar_controller_test.rb
+git add app/controllers/calendar_controller.rb app/views/calendar/day.html.erb test/controllers/calendar_controller_test.rb
 git commit -m "Add calendar day modal for creating/removing shifts by category"
 ```
