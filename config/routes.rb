@@ -12,8 +12,8 @@ Rails.application.routes.draw do
   get "profile" => "pages#profile"
   get "settings" => "pages#settings"
 
-  resources :posts, only: [:index, :show, :create, :destroy]
+  resources :plantoes, except: [:show]
 
   # Defines the root path route ("/")
-  root "posts#index"
+  root "plantoes#index"
 end

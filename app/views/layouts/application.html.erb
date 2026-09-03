@@ -6,6 +6,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Ruby Native">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -21,19 +23,17 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
     <%= stylesheet_link_tag "tailwind" %>
+    <%= stylesheet_link_tag :ruby_native %>
   </head>
 
   <body class="bg-slate-50 text-slate-900">
-    <nav class="bg-white border-b border-slate-200">
-      <div class="container mx-auto px-5 py-4 flex gap-6">
-        <%= link_to "Home", root_path, class: "font-medium hover:text-indigo-600" %>
-        <%= link_to "Profile", profile_path, class: "font-medium hover:text-indigo-600" %>
-        <%= link_to "Settings", settings_path, class: "font-medium hover:text-indigo-600" %>
-      </div>
-    </nav>
 
-    <main class="container mx-auto mt-8 px-5">
-      <%= yield %>
-    </main>
+    <%= native_tabs_tag %> 
+    
+    <%= render "layouts/navbar" unless native_app? %>
+
+    <main class="px-4 pb-8 native-inset">
+  <%= yield %>
+</main>
   </body>
 </html>
