@@ -2,11 +2,12 @@ class ShiftsController < ApplicationController
   before_action :set_shift, only: [:edit, :update, :destroy]
 
   def index
-    @shifts = Shift.order(:date, :start_time)
+    @shifts = Shift.order(:date, :start_time).includes(:category)
   end
 
   def new
     @shift = Shift.new
+    @categories = Category.order(:name)
   end
 
   def create
@@ -15,17 +16,20 @@ class ShiftsController < ApplicationController
     if @shift.save
       redirect_to destination_after_save, notice: "Plantão criado."
     else
+      @categories = Category.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    @categories = Category.order(:name)
   end
 
   def update
     if @shift.update(shift_params)
-      redirect_to root_path, notice: "Plantão atualizado."
+      redirect_to destination_after_save, notice: "Plantão atualizado."
     else
+      @categories = Category.order(:name)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -47,6 +51,6 @@ class ShiftsController < ApplicationController
 
   def destination_after_save
     return_to = params[:return_to]
-    return_to.present? && return_to.start_with?("/") ? return_to : root_path
+    return_to.present? && return_to.start_with?("/") && !return_to.start_with?("//") ? return_to : root_path
   end
 end

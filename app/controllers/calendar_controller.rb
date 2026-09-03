@@ -2,13 +2,15 @@ class CalendarController < ApplicationController
   def show
     @month = month_param
     @weeks = weeks_of_month(@month)
-    @colors_by_day = colors_by_day(@month)
+    @colors_by_day = colors_by_day(@weeks)
   end
 
   def day
     @date = Date.parse(params[:date])
     @shifts = Shift.where(date: @date).includes(:category).order(:start_time)
     @categories = Category.order(:name)
+  rescue Date::Error, ArgumentError, TypeError
+    redirect_to calendar_path
   end
 
   private
@@ -25,10 +27,12 @@ class CalendarController < ApplicationController
     (first..last).to_a.each_slice(7).to_a
   end
 
-  def colors_by_day(month)
-    Shift.where(date: month.beginning_of_month..month.end_of_month)
+  def colors_by_day(weeks)
+    Shift.where(date: weeks.first.first..weeks.last.last)
          .includes(:category)
          .group_by(&:date)
-         .transform_values { |shifts| shifts.map { |s| s.category&.color || "#94a3b8" }.uniq }
+         .transform_values do |shifts|
+           shifts.uniq { |s| s.category_id }.map { |s| s.category&.color || "#94a3b8" }
+         end
   end
 end

@@ -37,4 +37,23 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "Nenhum plantão", response.body
   end
+
+  test "should show empty-category guidance instead of form when no categories exist" do
+    Category.delete_all
+
+    get calendar_day_url(date: "2026-09-25")
+
+    assert_response :success
+    assert_match "Cadastre uma categoria", response.body
+  end
+
+  test "should show a colored dot for a shift on a previous-month padding day" do
+    category = categories(:hospital_x)
+    Shift.create!(date: Date.new(2026, 8, 31), category: category)
+
+    get calendar_url(month: "2026-09")
+
+    assert_response :success
+    assert_match category.color, response.body
+  end
 end

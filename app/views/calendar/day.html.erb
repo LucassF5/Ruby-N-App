@@ -25,12 +25,19 @@
         <p class="text-slate-500 text-sm">Nenhum plantão neste dia.</p>
       <% end %>
 
-      <%= form_with url: shifts_path, method: :post, class: "flex flex-col gap-2 border-t border-slate-200 pt-3" do %>
-        <%= hidden_field_tag "shift[date]", @date.strftime("%Y-%m-%d") %>
-        <%= hidden_field_tag "return_to", calendar_day_path(date: @date.strftime("%Y-%m-%d")) %>
-        <%= label_tag "shift_category_id", "Categoria", class: "text-sm font-medium" %>
-        <%= collection_select(:shift, :category_id, @categories, :id, :name, {}, class: "border border-slate-300 rounded px-3 py-2") %>
-        <%= submit_tag "Adicionar plantão", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+      <% if @categories.empty? %>
+        <p class="text-slate-500 text-sm border-t border-slate-200 pt-3">
+          Cadastre uma categoria antes de adicionar um plantão.
+          <%= link_to "Nova categoria", new_category_path, class: "text-indigo-600 hover:underline" %>
+        </p>
+      <% else %>
+        <%= form_with url: shifts_path, method: :post, class: "flex flex-col gap-2 border-t border-slate-200 pt-3" do %>
+          <%= hidden_field_tag "shift[date]", @date.strftime("%Y-%m-%d") %>
+          <%= hidden_field_tag "return_to", calendar_day_path(date: @date.strftime("%Y-%m-%d")) %>
+          <%= label_tag "shift_category_id", "Categoria", class: "text-sm font-medium" %>
+          <%= collection_select(:shift, :category_id, @categories, :id, :name, {}, class: "border border-slate-300 rounded px-3 py-2") %>
+          <%= submit_tag "Adicionar plantão", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+        <% end %>
       <% end %>
     </div>
   </div>

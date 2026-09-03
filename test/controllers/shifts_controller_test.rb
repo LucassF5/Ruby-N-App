@@ -77,6 +77,11 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test "should ignore return_to when it is a protocol-relative path" do
+    post shifts_url, params: { shift: { date: "2026-09-23", start_time: "08:00", end_time: "12:00" }, return_to: "//evil.example.com" }
+    assert_redirected_to root_url
+  end
+
   test "should destroy shift and redirect to return_to" do
     assert_difference("Shift.count", -1) do
       delete shift_url(@shift), params: { return_to: "/calendar" }
