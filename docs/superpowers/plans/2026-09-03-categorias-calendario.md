@@ -1099,12 +1099,14 @@ Rails.application.routes.draw do
   resources :categories, except: [:show]
   resources :shifts, except: [:show]
 
+  get "calendar", to: "calendar#show", as: :calendar
+
   # Defines the root path route ("/")
   root "shifts#index"
 end
 ```
 
-This deliberately drops the `get "calendario" => "pages#calendar"` line Task 4 added — it pointed at a nonexistent controller action and is not needed (Task 7 adds the real `calendar` route).
+This drops the `get "calendario" => "pages#calendar"` line Task 4 added (it pointed at a nonexistent controller action and its destination was never right) but — unlike the original plan — keeps a `calendar` route helper defined from this task onward, pointing at the real eventual destination (`calendar#show`, which Task 7 implements). This is required, not optional: `app/views/categories/index.html.erb` (Step 5, just above) calls `calendar_path` in a link, and `link_to` needs the **named route helper to exist** to render at all — it does not merely need the target controller/action to exist. Without this route, `CategoriesControllerTest#test_should_get_index` fails with `undefined local variable or method 'calendar_path'`, because rendering `index.html.erb` calls that helper immediately, regardless of whether anyone visits `/calendar`. `CalendarController` does not need to exist yet for this to work — Rails resolves a route's controller class lazily, only when a request actually dispatches to it, and nothing does until Task 7's tests run. This is exactly the failure mode Task 4's implementer was (correctly, if imprecisely) defending against with their placeholder — the fix here is to point the route at its real final destination from the start instead of a fake one, so no cleanup is needed later.
 
 - [ ] **Step 7: Clean up the now-dead inflection rules**
 
@@ -1642,14 +1644,13 @@ git commit -m "Add optional category and return_to support to Shifts flow"
 ### Task 7: Calendar month grid
 
 **Files:**
-- Modify: `config/routes.rb`
 - Create: `app/controllers/calendar_controller.rb`
 - Create: `app/views/calendar/show.html.erb`
 - Test: `test/controllers/calendar_controller_test.rb`
 
 **Interfaces:**
-- Consumes: `Shift`/`Category` (Tasks 2/3/5), `categories_path` (Task 5, for the "Gerenciar categorias" link).
-- Produces: `calendar_path` (this is what Task 5/6's dangling links resolve to), `@month` (a `Date`, first day of the displayed month), `@weeks` (array of 7-day `Date` arrays), `@colors_by_day` (`Hash` of `Date => Array<String>` hex colors) — all `CalendarController` instance variables other tasks don't touch.
+- Consumes: `Shift`/`Category` (Tasks 2/3/5), `categories_path` (Task 5, for the "Gerenciar categorias" link), the `calendar` route/`calendar_path` helper (already added to `config/routes.rb` in Task 5 — this task does not touch `routes.rb`, it makes that route's destination real).
+- Produces: a working `calendar#show` (this is what Task 5/6's `calendar_path` links, previously dangling at a route with no controller, now resolve to), `@month` (a `Date`, first day of the displayed month), `@weeks` (array of 7-day `Date` arrays), `@colors_by_day` (`Hash` of `Date => Array<String>` hex colors) — all `CalendarController` instance variables other tasks don't touch.
 
 - [ ] **Step 1: Write the failing controller test**
 
@@ -1684,15 +1685,11 @@ end
 - [ ] **Step 2: Run and confirm it fails**
 
 Run: `bin/rails test test/controllers/calendar_controller_test.rb`
-Expected: FAIL with a routing error (`calendar_url` undefined).
+Expected: FAIL — NOT a routing error this time (the `calendar` route already exists, added in Task 5). The failure is `uninitialized constant CalendarController`, because the route points at a controller that doesn't exist yet.
 
-- [ ] **Step 3: Add the route**
+- [ ] **Step 3: Confirm the route (already added by Task 5)**
 
-In `config/routes.rb`, add above `root "shifts#index"`:
-
-```ruby
-  get "calendar", to: "calendar#show", as: :calendar
-```
+Task 5 already added `get "calendar", to: "calendar#show", as: :calendar` to `config/routes.rb` (it was needed early so `categories/index.html.erb`'s `calendar_path` link would render). Open `config/routes.rb` and confirm that line is present — do not add it again. It has pointed at `calendar#show` since Task 5; this task is what makes that destination real.
 
 - [ ] **Step 4: Create the controller**
 
@@ -1789,7 +1786,7 @@ Expected: all PASS — this also confirms Task 5's `categories/index.html.erb` a
 - [ ] **Step 8: Commit**
 
 ```bash
-git add config/routes.rb app/controllers/calendar_controller.rb app/views/calendar/show.html.erb test/controllers/calendar_controller_test.rb
+git add app/controllers/calendar_controller.rb app/views/calendar/show.html.erb test/controllers/calendar_controller_test.rb
 git commit -m "Add calendar month grid view"
 ```
 
