@@ -1,4 +1,6 @@
 class Categoria < ApplicationRecord
+  has_many :plantoes, dependent: :nullify
+
   validates :nome, presence: true
   validates :cor, presence: true
   validates :hora_inicio, presence: true

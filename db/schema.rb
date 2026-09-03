@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_120036) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_120725) do
   create_table "categorias", force: :cascade do |t|
     t.string "cor", null: false
     t.datetime "created_at", null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_120036) do
   end
 
   create_table "plantoes", force: :cascade do |t|
+    t.integer "categoria_id"
     t.datetime "created_at", null: false
     t.date "data", null: false
     t.time "hora_fim", null: false
@@ -28,5 +29,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_120036) do
     t.string "local"
     t.text "observacao"
     t.datetime "updated_at", null: false
+    t.index ["categoria_id"], name: "index_plantoes_on_categoria_id"
   end
+
+  add_foreign_key "plantoes", "categorias"
 end
