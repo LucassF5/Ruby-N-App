@@ -1052,14 +1052,34 @@ In `config/routes.rb`, add right after the `calendario` route:
 
 - [ ] **Step 4: Add the controller action**
 
-In `app/controllers/calendario_controller.rb`, add a public `dia` action above `private`:
+In `app/controllers/calendario_controller.rb`, find:
 
 ```ruby
+  def show
+    @mes = mes_param
+    @semanas = semanas_do_mes(@mes)
+    @cores_por_dia = cores_por_dia(@mes)
+  end
+
+  private
+```
+
+Replace with:
+
+```ruby
+  def show
+    @mes = mes_param
+    @semanas = semanas_do_mes(@mes)
+    @cores_por_dia = cores_por_dia(@mes)
+  end
+
   def dia
     @data = Date.parse(params[:data])
     @plantoes = Plantao.where(data: @data).includes(:categoria).order(:hora_inicio)
     @categorias = Categoria.order(:nome)
   end
+
+  private
 ```
 
 - [ ] **Step 5: Create the view**
