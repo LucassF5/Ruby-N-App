@@ -1,0 +1,7 @@
+<% content_for :title, "Editar Categoria" %>
+
+<h1 class="text-2xl font-semibold mb-4">Editar Categoria</h1>
+
+<%= render "form", categoria: @categoria %>
+
+<%= link_to "Voltar", categorias_path, class: "text-sm text-indigo-600 hover:underline" %>
