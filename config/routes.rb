@@ -12,11 +12,11 @@ Rails.application.routes.draw do
   get "profile" => "pages#profile"
   get "settings" => "pages#settings"
 
-  resources :categorias, except: [:show]
-  resources :plantoes, except: [:show]
+  resources :categories, except: [:show]
+  resources :shifts, except: [:show]
 
-  get "calendario" => "pages#calendar", as: :calendario
+  get "calendar", to: "calendar#show", as: :calendar
 
   # Defines the root path route ("/")
-  root "plantoes#index"
+  root "shifts#index"
 end

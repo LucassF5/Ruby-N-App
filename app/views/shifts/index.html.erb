@@ -2,30 +2,30 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-semibold">Meus Plantões</h1>
-  <%= link_to "Novo plantão", new_plantao_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+  <%= link_to "Novo plantão", new_shift_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
 </div>
 
-<% if @plantoes.empty? %>
+<% if @shifts.empty? %>
   <p class="text-slate-600">Nenhum plantão cadastrado ainda.</p>
 <% else %>
   <div class="flex flex-col gap-4">
-    <% @plantoes.each do |plantao| %>
+    <% @shifts.each do |shift| %>
       <div class="bg-white border border-slate-200 rounded-lg p-4">
         <div class="flex justify-between items-start">
           <div>
             <h2 class="font-semibold">
-              <%= l(plantao.data, format: :long) %> · <%= plantao.hora_inicio.strftime("%H:%M") %>–<%= plantao.hora_fim.strftime("%H:%M") %>
+              <%= l(shift.date, format: :long) %> · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
             </h2>
-            <% if plantao.local.present? %>
-              <p class="text-slate-600 mt-1"><%= plantao.local %></p>
+            <% if shift.location.present? %>
+              <p class="text-slate-600 mt-1"><%= shift.location %></p>
             <% end %>
-            <% if plantao.observacao.present? %>
-              <p class="text-slate-500 text-sm mt-1"><%= plantao.observacao %></p>
+            <% if shift.notes.present? %>
+              <p class="text-slate-500 text-sm mt-1"><%= shift.notes %></p>
             <% end %>
           </div>
           <div class="flex gap-3 shrink-0">
-            <%= link_to "Editar", edit_plantao_path(plantao), class: "text-indigo-600 text-sm hover:underline" %>
-            <%= button_to "Remover", plantao_path(plantao), method: :delete, class: "text-red-600 text-sm hover:underline", form: { data: { turbo_confirm: "Remover este plantão?" } } %>
+            <%= link_to "Editar", edit_shift_path(shift), class: "text-indigo-600 text-sm hover:underline" %>
+            <%= button_to "Remover", shift_path(shift), method: :delete, class: "text-red-600 text-sm hover:underline", form: { data: { turbo_confirm: "Remover este plantão?" } } %>
           </div>
         </div>
       </div>

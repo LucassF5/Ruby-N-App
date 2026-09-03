@@ -1,11 +1,11 @@
-um:
-  data: 2026-09-10
-  hora_inicio: "08:00"
-  hora_fim: "14:00"
-  local: Hospital Central
-  observacao: Plantão de rotina
+one:
+  date: 2026-09-10
+  start_time: "08:00"
+  end_time: "14:00"
+  location: Hospital Central
+  notes: Plantão de rotina
 
-dois:
-  data: 2026-09-12
-  hora_inicio: "20:00"
-  hora_fim: "23:30"
+two:
+  date: 2026-09-12
+  start_time: "20:00"
+  end_time: "23:30"

@@ -2,29 +2,29 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-semibold">Categorias</h1>
-  <%= link_to "Nova categoria", new_categoria_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+  <%= link_to "Nova categoria", new_category_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
 </div>
 
-<% if @categorias.empty? %>
+<% if @categories.empty? %>
   <p class="text-slate-600">Nenhuma categoria cadastrada ainda.</p>
 <% else %>
   <div class="flex flex-col gap-4">
-    <% @categorias.each do |categoria| %>
+    <% @categories.each do |category| %>
       <div class="bg-white border border-slate-200 rounded-lg p-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-          <span class="w-4 h-4 rounded-full shrink-0" style="background-color: <%= categoria.cor %>"></span>
+          <span class="w-4 h-4 rounded-full shrink-0" style="background-color: <%= category.color %>"></span>
           <div>
-            <h2 class="font-semibold"><%= categoria.nome %></h2>
-            <p class="text-slate-600 text-sm"><%= categoria.hora_inicio.strftime("%H:%M") %>–<%= categoria.hora_fim.strftime("%H:%M") %></p>
+            <h2 class="font-semibold"><%= category.name %></h2>
+            <p class="text-slate-600 text-sm"><%= category.start_time.strftime("%H:%M") %>–<%= category.end_time.strftime("%H:%M") %></p>
           </div>
         </div>
         <div class="flex gap-3 shrink-0">
-          <%= link_to "Editar", edit_categoria_path(categoria), class: "text-indigo-600 text-sm hover:underline" %>
-          <%= button_to "Remover", categoria_path(categoria), method: :delete, class: "text-red-600 text-sm hover:underline", form: { data: { turbo_confirm: "Remover esta categoria?" } } %>
+          <%= link_to "Editar", edit_category_path(category), class: "text-indigo-600 text-sm hover:underline" %>
+          <%= button_to "Remover", category_path(category), method: :delete, class: "text-red-600 text-sm hover:underline", form: { data: { turbo_confirm: "Remover esta categoria?" } } %>
         </div>
       </div>
     <% end %>
   </div>
 <% end %>
 
-<%= link_to "Voltar ao calendário", calendario_path, class: "text-sm text-indigo-600 hover:underline mt-4 inline-block" %>
+<%= link_to "Voltar ao calendário", calendar_path, class: "text-sm text-indigo-600 hover:underline mt-4 inline-block" %>

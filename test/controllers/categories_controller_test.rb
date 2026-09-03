@@ -1,60 +1,60 @@
 require "test_helper"
 
-class CategoriasControllerTest < ActionDispatch::IntegrationTest
+class CategoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @categoria = categorias(:hospital_x)
+    @category = categories(:hospital_x)
   end
 
   test "should get index" do
-    get categorias_url
+    get categories_url
     assert_response :success
   end
 
   test "should get new" do
-    get new_categoria_url
+    get new_category_url
     assert_response :success
   end
 
-  test "should create categoria" do
-    assert_difference("Categoria.count") do
-      post categorias_url, params: { categoria: { nome: "Hospital Y", cor: "#f97316", hora_inicio: "08:00", hora_fim: "20:00" } }
+  test "should create category" do
+    assert_difference("Category.count") do
+      post categories_url, params: { category: { name: "Hospital Y", color: "#f97316", start_time: "08:00", end_time: "20:00" } }
     end
 
-    assert_redirected_to categorias_url
+    assert_redirected_to categories_url
   end
 
-  test "should not create categoria with invalid times" do
-    assert_no_difference("Categoria.count") do
-      post categorias_url, params: { categoria: { nome: "Hospital Y", cor: "#f97316", hora_inicio: "20:00", hora_fim: "08:00" } }
+  test "should not create category with invalid times" do
+    assert_no_difference("Category.count") do
+      post categories_url, params: { category: { name: "Hospital Y", color: "#f97316", start_time: "20:00", end_time: "08:00" } }
     end
 
     assert_response :unprocessable_entity
   end
 
   test "should get edit" do
-    get edit_categoria_url(@categoria)
+    get edit_category_url(@category)
     assert_response :success
   end
 
-  test "should update categoria" do
-    patch categoria_url(@categoria), params: { categoria: { nome: "Hospital X Renovado" } }
-    assert_redirected_to categorias_url
-    assert_equal "Hospital X Renovado", @categoria.reload.nome
+  test "should update category" do
+    patch category_url(@category), params: { category: { name: "Hospital X Renovado" } }
+    assert_redirected_to categories_url
+    assert_equal "Hospital X Renovado", @category.reload.name
   end
 
-  test "should destroy categoria" do
-    assert_difference("Categoria.count", -1) do
-      delete categoria_url(@categoria)
+  test "should destroy category" do
+    assert_difference("Category.count", -1) do
+      delete category_url(@category)
     end
 
-    assert_redirected_to categorias_url
+    assert_redirected_to categories_url
   end
 
-  test "destroying categoria nullifies associated plantoes instead of blocking" do
-    plantao = Plantao.create!(data: Date.new(2026, 9, 10), categoria: @categoria)
+  test "destroying category nullifies associated shifts instead of blocking" do
+    shift = Shift.create!(date: Date.new(2026, 9, 10), category: @category)
 
-    delete categoria_url(@categoria)
+    delete category_url(@category)
 
-    assert_nil plantao.reload.categoria_id
+    assert_nil shift.reload.category_id
   end
 end

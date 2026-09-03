@@ -10,27 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_120725) do
-  create_table "categorias", force: :cascade do |t|
-    t.string "cor", null: false
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_122642) do
+  create_table "categories", force: :cascade do |t|
+    t.string "color", null: false
     t.datetime "created_at", null: false
-    t.time "hora_fim", null: false
-    t.time "hora_inicio", null: false
-    t.string "nome", null: false
+    t.time "end_time", null: false
+    t.string "name", null: false
+    t.time "start_time", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "plantoes", force: :cascade do |t|
-    t.integer "categoria_id"
+  create_table "shifts", force: :cascade do |t|
+    t.integer "category_id"
     t.datetime "created_at", null: false
-    t.date "data", null: false
-    t.time "hora_fim", null: false
-    t.time "hora_inicio", null: false
-    t.string "local"
-    t.text "observacao"
+    t.date "date", null: false
+    t.time "end_time", null: false
+    t.string "location"
+    t.text "notes"
+    t.time "start_time", null: false
     t.datetime "updated_at", null: false
-    t.index ["categoria_id"], name: "index_plantoes_on_categoria_id"
+    t.index ["category_id"], name: "index_shifts_on_category_id"
   end
 
-  add_foreign_key "plantoes", "categorias"
+  add_foreign_key "shifts", "categories"
 end

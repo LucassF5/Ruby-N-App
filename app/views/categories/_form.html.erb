@@ -1,23 +1,23 @@
-<%= form_with model: categoria, class: "bg-white border border-slate-200 rounded-lg p-4 mb-8 flex flex-col gap-3" do |f| %>
-  <% if categoria.errors.any? %>
+<%= form_with model: category, class: "bg-white border border-slate-200 rounded-lg p-4 mb-8 flex flex-col gap-3" do |f| %>
+  <% if category.errors.any? %>
     <ul class="text-red-600 text-sm">
-      <% categoria.errors.full_messages.each do |message| %>
+      <% category.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
   <% end %>
 
-  <%= f.label :nome, "Nome", class: "text-sm font-medium" %>
-  <%= f.text_field :nome, class: "border border-slate-300 rounded px-3 py-2" %>
+  <%= f.label :name, "Nome", class: "text-sm font-medium" %>
+  <%= f.text_field :name, class: "border border-slate-300 rounded px-3 py-2" %>
 
-  <%= f.label :cor, "Cor", class: "text-sm font-medium" %>
-  <%= f.color_field :cor, class: "border border-slate-300 rounded h-10 w-20" %>
+  <%= f.label :color, "Cor", class: "text-sm font-medium" %>
+  <%= f.color_field :color, class: "border border-slate-300 rounded h-10 w-20" %>
 
-  <%= f.label :hora_inicio, "Horário de início", class: "text-sm font-medium" %>
-  <%= f.time_field :hora_inicio, class: "border border-slate-300 rounded px-3 py-2" %>
+  <%= f.label :start_time, "Horário de início", class: "text-sm font-medium" %>
+  <%= f.time_field :start_time, class: "border border-slate-300 rounded px-3 py-2" %>
 
-  <%= f.label :hora_fim, "Horário de término", class: "text-sm font-medium" %>
-  <%= f.time_field :hora_fim, class: "border border-slate-300 rounded px-3 py-2" %>
+  <%= f.label :end_time, "Horário de término", class: "text-sm font-medium" %>
+  <%= f.time_field :end_time, class: "border border-slate-300 rounded px-3 py-2" %>
 
   <%= f.submit "Salvar", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
 <% end %>

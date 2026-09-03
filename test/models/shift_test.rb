@@ -1,72 +1,72 @@
 require "test_helper"
 
-class PlantaoTest < ActiveSupport::TestCase
-  test "valid with data, hora_inicio, hora_fim" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "08:00", hora_fim: "14:00")
-    assert plantao.valid?
+class ShiftTest < ActiveSupport::TestCase
+  test "valid with date, start_time, end_time" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "08:00", end_time: "14:00")
+    assert shift.valid?
   end
 
-  test "invalid without data" do
-    plantao = Plantao.new(data: nil, hora_inicio: "08:00", hora_fim: "14:00")
-    assert_not plantao.valid?
+  test "invalid without date" do
+    shift = Shift.new(date: nil, start_time: "08:00", end_time: "14:00")
+    assert_not shift.valid?
   end
 
-  test "invalid without hora_inicio" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: nil, hora_fim: "14:00")
-    assert_not plantao.valid?
+  test "invalid without start_time" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: nil, end_time: "14:00")
+    assert_not shift.valid?
   end
 
-  test "invalid without hora_fim" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "08:00", hora_fim: nil)
-    assert_not plantao.valid?
+  test "invalid without end_time" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "08:00", end_time: nil)
+    assert_not shift.valid?
   end
 
-  test "invalid when hora_fim is before hora_inicio" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "14:00", hora_fim: "08:00")
-    assert_not plantao.valid?
-    assert_includes plantao.errors[:hora_fim], "deve ser depois do horário de início"
+  test "invalid when end_time is before start_time" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "14:00", end_time: "08:00")
+    assert_not shift.valid?
+    assert_includes shift.errors[:end_time], "deve ser depois do horário de início"
   end
 
-  test "invalid when hora_fim equals hora_inicio" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "08:00", hora_fim: "08:00")
-    assert_not plantao.valid?
+  test "invalid when end_time equals start_time" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "08:00", end_time: "08:00")
+    assert_not shift.valid?
   end
 
-  test "valid without local or observacao" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "08:00", hora_fim: "14:00", local: nil, observacao: nil)
-    assert plantao.valid?
+  test "valid without location or notes" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "08:00", end_time: "14:00", location: nil, notes: nil)
+    assert shift.valid?
   end
 
-  test "valid with categoria and no explicit hora_inicio/hora_fim" do
-    categoria = categorias(:hospital_x)
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), categoria: categoria)
+  test "valid with category and no explicit start_time/end_time" do
+    category = categories(:hospital_x)
+    shift = Shift.new(date: Date.new(2026, 9, 10), category: category)
 
-    assert plantao.valid?
-    assert_equal categoria.hora_inicio, plantao.hora_inicio
-    assert_equal categoria.hora_fim, plantao.hora_fim
+    assert shift.valid?
+    assert_equal category.start_time, shift.start_time
+    assert_equal category.end_time, shift.end_time
   end
 
-  test "keeps explicit hora_inicio/hora_fim even with categoria set" do
-    categoria = categorias(:hospital_x)
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "09:00", hora_fim: "10:00", categoria: categoria)
+  test "keeps explicit start_time/end_time even with category set" do
+    category = categories(:hospital_x)
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "09:00", end_time: "10:00", category: category)
 
-    assert plantao.valid?
-    assert_equal "09:00", plantao.hora_inicio.strftime("%H:%M")
-    assert_equal "10:00", plantao.hora_fim.strftime("%H:%M")
+    assert shift.valid?
+    assert_equal "09:00", shift.start_time.strftime("%H:%M")
+    assert_equal "10:00", shift.end_time.strftime("%H:%M")
   end
 
-  test "valid without categoria" do
-    plantao = Plantao.new(data: Date.new(2026, 9, 10), hora_inicio: "08:00", hora_fim: "14:00")
-    assert plantao.valid?
-    assert_nil plantao.categoria
+  test "valid without category" do
+    shift = Shift.new(date: Date.new(2026, 9, 10), start_time: "08:00", end_time: "14:00")
+    assert shift.valid?
+    assert_nil shift.category
   end
 
-  test "destroying categoria nullifies associated plantao" do
-    categoria = categorias(:hospital_x)
-    plantao = Plantao.create!(data: Date.new(2026, 9, 10), categoria: categoria)
+  test "destroying category nullifies associated shift" do
+    category = categories(:hospital_x)
+    shift = Shift.create!(date: Date.new(2026, 9, 10), category: category)
 
-    categoria.destroy
+    category.destroy
 
-    assert_nil plantao.reload.categoria_id
+    assert_nil shift.reload.category_id
   end
 end

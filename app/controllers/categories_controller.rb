@@ -1,19 +1,19 @@
-class CategoriasController < ApplicationController
-  before_action :set_categoria, only: [:edit, :update, :destroy]
+class CategoriesController < ApplicationController
+  before_action :set_category, only: [:edit, :update, :destroy]
 
   def index
-    @categorias = Categoria.order(:nome)
+    @categories = Category.order(:name)
   end
 
   def new
-    @categoria = Categoria.new
+    @category = Category.new
   end
 
   def create
-    @categoria = Categoria.new(categoria_params)
+    @category = Category.new(category_params)
 
-    if @categoria.save
-      redirect_to categorias_path, notice: "Categoria criada."
+    if @category.save
+      redirect_to categories_path, notice: "Categoria criada."
     else
       render :new, status: :unprocessable_entity
     end
@@ -23,25 +23,25 @@ class CategoriasController < ApplicationController
   end
 
   def update
-    if @categoria.update(categoria_params)
-      redirect_to categorias_path, notice: "Categoria atualizada."
+    if @category.update(category_params)
+      redirect_to categories_path, notice: "Categoria atualizada."
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @categoria.destroy
-    redirect_to categorias_path, notice: "Categoria removida."
+    @category.destroy
+    redirect_to categories_path, notice: "Categoria removida."
   end
 
   private
 
-  def set_categoria
-    @categoria = Categoria.find(params[:id])
+  def set_category
+    @category = Category.find(params[:id])
   end
 
-  def categoria_params
-    params.require(:categoria).permit(:nome, :cor, :hora_inicio, :hora_fim)
+  def category_params
+    params.require(:category).permit(:name, :color, :start_time, :end_time)
   end
 end

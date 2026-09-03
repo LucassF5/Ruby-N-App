@@ -1,25 +1,25 @@
-class Plantao < ApplicationRecord
-  belongs_to :categoria, optional: true
+class Shift < ApplicationRecord
+  belongs_to :category, optional: true
 
-  before_validation :aplicar_horario_da_categoria
+  before_validation :apply_category_schedule
 
-  validates :data, presence: true
-  validates :hora_inicio, presence: true
-  validates :hora_fim, presence: true
-  validate :hora_fim_depois_da_hora_inicio
+  validates :date, presence: true
+  validates :start_time, presence: true
+  validates :end_time, presence: true
+  validate :end_time_after_start_time
 
   private
 
-  def aplicar_horario_da_categoria
-    return unless categoria
+  def apply_category_schedule
+    return unless category
 
-    self.hora_inicio ||= categoria.hora_inicio
-    self.hora_fim ||= categoria.hora_fim
+    self.start_time ||= category.start_time
+    self.end_time ||= category.end_time
   end
 
-  def hora_fim_depois_da_hora_inicio
-    return if hora_inicio.blank? || hora_fim.blank?
+  def end_time_after_start_time
+    return if start_time.blank? || end_time.blank?
 
-    errors.add(:hora_fim, "deve ser depois do horário de início") if hora_fim <= hora_inicio
+    errors.add(:end_time, "deve ser depois do horário de início") if end_time <= start_time
   end
 end

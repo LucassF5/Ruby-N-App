@@ -1,18 +1,18 @@
-class PlantoesController < ApplicationController
-  before_action :set_plantao, only: [:edit, :update, :destroy]
+class ShiftsController < ApplicationController
+  before_action :set_shift, only: [:edit, :update, :destroy]
 
   def index
-    @plantoes = Plantao.order(:data, :hora_inicio)
+    @shifts = Shift.order(:date, :start_time)
   end
 
   def new
-    @plantao = Plantao.new
+    @shift = Shift.new
   end
 
   def create
-    @plantao = Plantao.new(plantao_params)
+    @shift = Shift.new(shift_params)
 
-    if @plantao.save
+    if @shift.save
       redirect_to root_path, notice: "Plantão criado."
     else
       render :new, status: :unprocessable_entity
@@ -23,7 +23,7 @@ class PlantoesController < ApplicationController
   end
 
   def update
-    if @plantao.update(plantao_params)
+    if @shift.update(shift_params)
       redirect_to root_path, notice: "Plantão atualizado."
     else
       render :edit, status: :unprocessable_entity
@@ -31,17 +31,17 @@ class PlantoesController < ApplicationController
   end
 
   def destroy
-    @plantao.destroy
+    @shift.destroy
     redirect_to root_path, notice: "Plantão removido."
   end
 
   private
 
-  def set_plantao
-    @plantao = Plantao.find(params[:id])
+  def set_shift
+    @shift = Shift.find(params[:id])
   end
 
-  def plantao_params
-    params.require(:plantao).permit(:data, :hora_inicio, :hora_fim, :local, :observacao)
+  def shift_params
+    params.require(:shift).permit(:date, :start_time, :end_time, :location, :notes)
   end
 end

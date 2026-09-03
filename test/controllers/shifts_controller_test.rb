@@ -1,8 +1,8 @@
 require "test_helper"
 
-class PlantoesControllerTest < ActionDispatch::IntegrationTest
+class ShiftsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @plantao = plantoes(:um)
+    @shift = shifts(:one)
   end
 
   test "should get index" do
@@ -11,45 +11,45 @@ class PlantoesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_plantao_url
+    get new_shift_url
     assert_response :success
   end
 
-  test "should create plantao" do
-    assert_difference("Plantao.count") do
-      post plantoes_url, params: { plantao: { data: "2026-09-15", hora_inicio: "09:00", hora_fim: "17:00", local: "Posto Sul" } }
+  test "should create shift" do
+    assert_difference("Shift.count") do
+      post shifts_url, params: { shift: { date: "2026-09-15", start_time: "09:00", end_time: "17:00", location: "Posto Sul" } }
     end
 
     assert_redirected_to root_url
   end
 
-  test "should not create plantao with invalid times" do
-    assert_no_difference("Plantao.count") do
-      post plantoes_url, params: { plantao: { data: "2026-09-15", hora_inicio: "17:00", hora_fim: "09:00" } }
+  test "should not create shift with invalid times" do
+    assert_no_difference("Shift.count") do
+      post shifts_url, params: { shift: { date: "2026-09-15", start_time: "17:00", end_time: "09:00" } }
     end
 
     assert_response :unprocessable_entity
   end
 
   test "should get edit" do
-    get edit_plantao_url(@plantao)
+    get edit_shift_url(@shift)
     assert_response :success
   end
 
-  test "should update plantao" do
-    patch plantao_url(@plantao), params: { plantao: { local: "Novo Local" } }
+  test "should update shift" do
+    patch shift_url(@shift), params: { shift: { location: "Novo Local" } }
     assert_redirected_to root_url
-    assert_equal "Novo Local", @plantao.reload.local
+    assert_equal "Novo Local", @shift.reload.location
   end
 
-  test "should not update plantao with invalid times" do
-    patch plantao_url(@plantao), params: { plantao: { hora_inicio: "17:00", hora_fim: "09:00" } }
+  test "should not update shift with invalid times" do
+    patch shift_url(@shift), params: { shift: { start_time: "17:00", end_time: "09:00" } }
     assert_response :unprocessable_entity
   end
 
-  test "should destroy plantao" do
-    assert_difference("Plantao.count", -1) do
-      delete plantao_url(@plantao)
+  test "should destroy shift" do
+    assert_difference("Shift.count", -1) do
+      delete shift_url(@shift)
     end
 
     assert_redirected_to root_url
