@@ -1,0 +1,11 @@
+hospital_x:
+  nome: Hospital X
+  cor: "#4f46e5"
+  hora_inicio: "07:00"
+  hora_fim: "19:00"
+
+posto_sul:
+  nome: Posto Sul
+  cor: "#16a34a"
+  hora_inicio: "13:00"
+  hora_fim: "19:00"
