@@ -5,6 +5,12 @@ class CalendarController < ApplicationController
     @colors_by_day = colors_by_day(@month)
   end
 
+  def day
+    @date = Date.parse(params[:date])
+    @shifts = Shift.where(date: @date).includes(:category).order(:start_time)
+    @categories = Category.order(:name)
+  end
+
   private
 
   def month_param

@@ -20,4 +20,21 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match category.color, response.body
   end
+
+  test "should get day with existing shifts" do
+    category = categories(:hospital_x)
+    Shift.create!(date: Date.new(2026, 9, 20), category: category)
+
+    get calendar_day_url(date: "2026-09-20")
+
+    assert_response :success
+    assert_match category.name, response.body
+  end
+
+  test "should get day without shifts" do
+    get calendar_day_url(date: "2026-09-25")
+
+    assert_response :success
+    assert_match "Nenhum plantão", response.body
+  end
 end
