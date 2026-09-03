@@ -2,7 +2,10 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-semibold">Meus Plantões</h1>
-  <%= link_to "Novo plantão", new_shift_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+  <div class="flex gap-3 items-center">
+    <%= link_to "Ver calendário", calendar_path, class: "text-indigo-600 text-sm hover:underline" %>
+    <%= link_to "Novo plantão", new_shift_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+  </div>
 </div>
 
 <% if @shifts.empty? %>
@@ -16,7 +19,12 @@
             <h2 class="font-semibold">
               <%= l(shift.date, format: :long) %> · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
             </h2>
-            <% if shift.location.present? %>
+            <% if shift.category.present? %>
+              <p class="text-slate-600 mt-1 flex items-center gap-2">
+                <span class="inline-block w-3 h-3 rounded-full shrink-0" style="background-color: <%= shift.category.color %>"></span>
+                <%= shift.category.name %>
+              </p>
+            <% elsif shift.location.present? %>
               <p class="text-slate-600 mt-1"><%= shift.location %></p>
             <% end %>
             <% if shift.notes.present? %>

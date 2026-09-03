@@ -13,7 +13,7 @@ class ShiftsController < ApplicationController
     @shift = Shift.new(shift_params)
 
     if @shift.save
-      redirect_to root_path, notice: "Plantão criado."
+      redirect_to destination_after_save, notice: "Plantão criado."
     else
       render :new, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class ShiftsController < ApplicationController
 
   def destroy
     @shift.destroy
-    redirect_to root_path, notice: "Plantão removido."
+    redirect_to destination_after_save, notice: "Plantão removido."
   end
 
   private
@@ -42,6 +42,11 @@ class ShiftsController < ApplicationController
   end
 
   def shift_params
-    params.require(:shift).permit(:date, :start_time, :end_time, :location, :notes)
+    params.require(:shift).permit(:date, :start_time, :end_time, :location, :notes, :category_id)
+  end
+
+  def destination_after_save
+    return_to = params[:return_to]
+    return_to.present? && return_to.start_with?("/") ? return_to : root_path
   end
 end

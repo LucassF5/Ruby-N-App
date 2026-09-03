@@ -16,6 +16,9 @@
   <%= f.label :end_time, "Horário de término", class: "text-sm font-medium" %>
   <%= f.time_field :end_time, class: "border border-slate-300 rounded px-3 py-2" %>
 
+  <%= f.label :category_id, "Categoria (opcional)", class: "text-sm font-medium" %>
+  <%= f.collection_select :category_id, Category.order(:name), :id, :name, { include_blank: "Nenhuma" }, class: "border border-slate-300 rounded px-3 py-2" %>
+
   <%= f.label :location, "Local (opcional)", class: "text-sm font-medium" %>
   <%= f.text_field :location, class: "border border-slate-300 rounded px-3 py-2" %>
 
