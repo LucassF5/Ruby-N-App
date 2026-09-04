@@ -2,6 +2,7 @@ require "test_helper"
 
 class ShiftsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    sign_in_as users(:jane)
     @shift = shifts(:one)
   end
 

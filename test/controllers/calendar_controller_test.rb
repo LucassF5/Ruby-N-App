@@ -1,6 +1,10 @@
 require "test_helper"
 
 class CalendarControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in_as users(:jane)
+  end
+
   test "should get calendar for current month" do
     get calendar_url
     assert_response :success
