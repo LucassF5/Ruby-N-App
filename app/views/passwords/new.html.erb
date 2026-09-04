@@ -3,8 +3,10 @@
 <div class="max-w-sm mx-auto mt-8 bg-surface-container-lowest rounded-2xl shadow-sm p-8">
   <h1 class="text-large-title text-on-surface mb-6">Esqueci minha senha</h1>
 
-  <%= form_with url: passwords_path, class: "space-y-4" do |form| %>
-    <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true, autofocus: true } %>
+  <%= form_with url: passwords_path do |form| %>
+    <div class="bg-surface-container rounded-2xl mb-6 overflow-hidden">
+      <%= render "shared/form_row", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true, autofocus: true }, last: true %>
+    </div>
 
     <%= form.submit "Enviar link de redefinição", class: "w-full bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
   <% end %>

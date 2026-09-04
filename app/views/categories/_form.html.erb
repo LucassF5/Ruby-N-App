@@ -1,25 +1,23 @@
 <%= native_keyboard_tag(toolbar: false) %>
 
-<%= form_with model: category, class: "bg-surface-container-lowest rounded-2xl shadow-sm p-5 mb-8 flex flex-col gap-3" do |f| %>
+<%= form_with model: category do |f| %>
   <% if category.errors.any? %>
-    <ul class="text-error text-footnote">
-      <% category.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+    <div class="mb-4 px-4 py-3 rounded-2xl bg-error-container text-on-error-container text-callout">
+      <ul class="list-disc list-inside">
+        <% category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <%= f.label :name, "Nome", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.text_field :name, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
-
-  <%= f.label :color, "Cor", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.color_field :color, class: "border border-outline-variant rounded-xl h-10 w-20" %>
-
-  <%= f.label :start_time, "Horário de início", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.time_field :start_time, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
-
-  <%= f.label :end_time, "Horário de término", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.time_field :end_time, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Detalhes da categoria</p>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-8 overflow-hidden">
+    <%= render "shared/form_row", form: f, attribute: :name, label: "Nome" %>
+    <%= render "shared/form_row", form: f, attribute: :color, label: "Cor", type: :color %>
+    <%= render "shared/form_row", form: f, attribute: :start_time, label: "Horário de início", type: :time %>
+    <%= render "shared/form_row", form: f, attribute: :end_time, label: "Horário de término", type: :time, last: true %>
+  </div>
 
   <div class="native-hidden">
     <%= f.submit "Salvar", class: "self-start bg-primary text-on-primary px-5 py-3 rounded-full text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>

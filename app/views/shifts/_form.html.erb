@@ -1,31 +1,29 @@
 <%= native_keyboard_tag(toolbar: false) %>
 
-<%= form_with model: shift, class: "bg-surface-container-lowest rounded-2xl shadow-sm p-5 mb-8 flex flex-col gap-3" do |f| %>
+<%= form_with model: shift do |f| %>
   <% if shift.errors.any? %>
-    <ul class="text-error text-footnote">
-      <% shift.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+    <div class="mb-4 px-4 py-3 rounded-2xl bg-error-container text-on-error-container text-callout">
+      <ul class="list-disc list-inside">
+        <% shift.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <%= f.label :date, "Data", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.date_field :date, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Quando</p>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-6 overflow-hidden">
+    <%= render "shared/form_row", form: f, attribute: :date, label: "Data", type: :date %>
+    <%= render "shared/form_row", form: f, attribute: :start_time, label: "Horário de início", type: :time %>
+    <%= render "shared/form_row", form: f, attribute: :end_time, label: "Horário de término", type: :time, last: true %>
+  </div>
 
-  <%= f.label :start_time, "Horário de início", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.time_field :start_time, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
-
-  <%= f.label :end_time, "Horário de término", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.time_field :end_time, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
-
-  <%= f.label :category_id, "Categoria (opcional)", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "Nenhuma" }, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
-
-  <%= f.label :location, "Local (opcional)", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.text_field :location, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
-
-  <%= f.label :notes, "Observação (opcional)", class: "text-caption-1 text-on-surface-variant" %>
-  <%= f.text_area :notes, rows: 3, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Detalhes</p>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-8 overflow-hidden">
+    <%= render "shared/form_row", form: f, attribute: :category_id, label: "Categoria (opcional)", type: :select, collection: @categories, include_blank: "Nenhuma" %>
+    <%= render "shared/form_row", form: f, attribute: :location, label: "Local (opcional)" %>
+    <%= render "shared/form_row", form: f, attribute: :notes, label: "Observação (opcional)", type: :textarea, last: true %>
+  </div>
 
   <div class="native-hidden">
     <%= f.submit "Salvar", class: "self-start bg-primary text-on-primary px-5 py-3 rounded-full text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>

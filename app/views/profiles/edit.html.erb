@@ -37,15 +37,15 @@
 
   <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Informações</p>
   <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-6 overflow-hidden">
-    <%= render "shared/settings_row", form: form, attribute: :name, label: "Nome" %>
-    <%= render "shared/settings_row", form: form, attribute: :email_address, label: "Email", type: :email, last: true %>
+    <%= render "shared/form_row", form: form, attribute: :name, label: "Nome" %>
+    <%= render "shared/form_row", form: form, attribute: :email_address, label: "Email", type: :email, last: true %>
   </div>
 
   <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Segurança</p>
   <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-6 overflow-hidden">
-    <%= render "shared/settings_row", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
-    <%= render "shared/settings_row", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
-    <%= render "shared/settings_row", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" }, last: true %>
+    <%= render "shared/form_row", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
+    <%= render "shared/form_row", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
+    <%= render "shared/form_row", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" }, last: true %>
   </div>
 
   <div class="native-hidden">

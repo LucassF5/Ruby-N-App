@@ -1,0 +1,31 @@
+<%
+  field_type = local_assigns.fetch(:type, :text)
+  options = local_assigns.fetch(:options, {})
+  last = local_assigns.fetch(:last, false)
+  collection = local_assigns[:collection]
+  include_blank = local_assigns[:include_blank]
+  rows = local_assigns.fetch(:rows, 3)
+  input_css = "w-full bg-transparent text-body text-on-surface placeholder:text-outline focus:outline-none"
+%>
+<div class="relative px-4 py-3 <%= "border-b border-outline-variant/60" unless last %>">
+  <%= form.label attribute, label, class: "block text-caption-2 text-on-surface-variant mb-0.5" %>
+  <% case field_type %>
+  <% when :email %>
+    <%= form.email_field attribute, options.reverse_merge(class: input_css) %>
+  <% when :password %>
+    <%= form.password_field attribute, options.reverse_merge(class: input_css) %>
+  <% when :date %>
+    <%= form.date_field attribute, options.reverse_merge(class: input_css) %>
+  <% when :time %>
+    <%= form.time_field attribute, options.reverse_merge(class: input_css) %>
+  <% when :textarea %>
+    <%= form.text_area attribute, rows: rows, class: "#{input_css} resize-none" %>
+  <% when :select %>
+    <%= form.collection_select attribute, collection, :id, :name, { include_blank: include_blank }, options.reverse_merge(class: "#{input_css} appearance-none pr-6") %>
+    <span class="material-symbols-outlined absolute right-4 bottom-3.5 text-outline-variant text-[18px] pointer-events-none">expand_more</span>
+  <% when :color %>
+    <%= form.color_field attribute, options.reverse_merge(class: "h-8 w-16 border-0 bg-transparent p-0") %>
+  <% else %>
+    <%= form.text_field attribute, options.reverse_merge(class: input_css) %>
+  <% end %>
+</div>

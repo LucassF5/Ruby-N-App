@@ -3,19 +3,23 @@
 <div class="max-w-sm mx-auto mt-8 bg-surface-container-lowest rounded-2xl shadow-sm p-8">
   <h1 class="text-large-title text-on-surface mb-6">Criar conta</h1>
 
-  <%= form_with model: @user, url: registrations_path, class: "space-y-4" do |form| %>
+  <%= form_with model: @user, url: registrations_path do |form| %>
     <% if @user.errors.any? %>
-      <ul class="text-error text-footnote">
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+      <div class="mb-4 px-4 py-3 rounded-2xl bg-error-container text-on-error-container text-callout">
+        <ul class="list-disc list-inside">
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
 
-    <%= render "shared/field", form: form, attribute: :name, label: "Nome", options: { required: true, autofocus: true } %>
-    <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true } %>
-    <%= render "shared/field", form: form, attribute: :password, label: "Senha", type: :password, options: { required: true, autocomplete: "new-password" } %>
-    <%= render "shared/field", form: form, attribute: :password_confirmation, label: "Confirmar senha", type: :password, options: { required: true, autocomplete: "new-password" } %>
+    <div class="bg-surface-container rounded-2xl mb-6 overflow-hidden">
+      <%= render "shared/form_row", form: form, attribute: :name, label: "Nome", options: { required: true, autofocus: true } %>
+      <%= render "shared/form_row", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true } %>
+      <%= render "shared/form_row", form: form, attribute: :password, label: "Senha", type: :password, options: { required: true, autocomplete: "new-password" } %>
+      <%= render "shared/form_row", form: form, attribute: :password_confirmation, label: "Confirmar senha", type: :password, options: { required: true, autocomplete: "new-password" }, last: true %>
+    </div>
 
     <%= form.submit "Criar conta", class: "w-full bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
   <% end %>
