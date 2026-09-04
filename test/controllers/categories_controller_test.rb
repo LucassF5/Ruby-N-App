@@ -52,7 +52,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "destroying category nullifies associated shifts instead of blocking" do
-    shift = Shift.create!(date: Date.new(2026, 9, 10), category: @category)
+    shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 10), category: @category)
 
     delete category_url(@category)
 

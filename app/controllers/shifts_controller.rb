@@ -11,7 +11,7 @@ class ShiftsController < ApplicationController
   end
 
   def create
-    @shift = Shift.new(shift_params)
+    @shift = Shift.new(shift_params.merge(user: Current.user))
 
     if @shift.save
       redirect_to destination_after_save, notice: "Plantão criado."

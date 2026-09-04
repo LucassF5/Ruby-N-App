@@ -1,4 +1,5 @@
 class Shift < ApplicationRecord
+  belongs_to :user
   belongs_to :category, optional: true
 
   before_validation :apply_category_schedule

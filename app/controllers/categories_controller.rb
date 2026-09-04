@@ -10,7 +10,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = Category.new(category_params)
+    @category = Category.new(category_params.merge(user: Current.user))
 
     if @category.save
       redirect_to categories_path, notice: "Categoria criada."
