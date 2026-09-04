@@ -2,34 +2,34 @@ class ShiftsController < ApplicationController
   before_action :set_shift, only: [:edit, :update, :destroy]
 
   def index
-    @shifts = Shift.order(:date, :start_time).includes(:category)
+    @shifts = Current.user.shifts.order(:date, :start_time).includes(:category)
   end
 
   def new
-    @shift = Shift.new
-    @categories = Category.order(:name)
+    @shift = Current.user.shifts.new
+    @categories = Current.user.categories.order(:name)
   end
 
   def create
-    @shift = Shift.new(shift_params)
+    @shift = Current.user.shifts.new(shift_params)
 
     if @shift.save
       redirect_to destination_after_save, notice: "Plantão criado."
     else
-      @categories = Category.order(:name)
+      @categories = Current.user.categories.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @categories = Category.order(:name)
+    @categories = Current.user.categories.order(:name)
   end
 
   def update
     if @shift.update(shift_params)
       redirect_to destination_after_save, notice: "Plantão atualizado."
     else
-      @categories = Category.order(:name)
+      @categories = Current.user.categories.order(:name)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -42,7 +42,7 @@ class ShiftsController < ApplicationController
   private
 
   def set_shift
-    @shift = Shift.find(params[:id])
+    @shift = Current.user.shifts.find(params[:id])
   end
 
   def shift_params

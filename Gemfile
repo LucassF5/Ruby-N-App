@@ -6,6 +6,8 @@ gem "rails", "~> 8.1.3", ">= 8.1.3.1"
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
+gem "bcrypt", "~> 3.1.7"
+gem "image_processing", "~> 1.2"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -22,3 +24,6 @@ gem "turbo-rails"
 gem "importmap-rails"
 
 gem "ruby_native", "~> 0.15.2"
+gem "omniauth", "~> 2.1"
+gem "omniauth-apple", "~> 1.2"
+gem "omniauth-rails_csrf_protection", "~> 2.0.1"

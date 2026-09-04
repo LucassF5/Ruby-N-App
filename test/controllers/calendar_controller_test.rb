@@ -1,6 +1,10 @@
 require "test_helper"
 
 class CalendarControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    sign_in_as users(:jane)
+  end
+
   test "should get calendar for current month" do
     get calendar_url
     assert_response :success
@@ -13,7 +17,7 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
 
   test "should show a colored dot for a day with a category shift" do
     category = categories(:hospital_x)
-    Shift.create!(date: Date.new(2026, 9, 20), category: category)
+    Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
 
     get calendar_url(month: "2026-09")
 
@@ -23,7 +27,7 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
 
   test "should get day with existing shifts" do
     category = categories(:hospital_x)
-    Shift.create!(date: Date.new(2026, 9, 20), category: category)
+    Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
 
     get calendar_day_url(date: "2026-09-20")
 
@@ -49,11 +53,20 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
 
   test "should show a colored dot for a shift on a previous-month padding day" do
     category = categories(:hospital_x)
-    Shift.create!(date: Date.new(2026, 8, 31), category: category)
+    Shift.create!(user: users(:jane), date: Date.new(2026, 8, 31), category: category)
 
     get calendar_url(month: "2026-09")
 
     assert_response :success
     assert_match category.color, response.body
+  end
+
+  test "does not show another user's shift on the calendar" do
+    Shift.create!(user: users(:john), date: Date.new(2026, 9, 20), start_time: "08:00", end_time: "12:00", location: "Clínica de John")
+
+    get calendar_day_url(date: "2026-09-20")
+
+    assert_response :success
+    assert_no_match "Clínica de John", response.body
   end
 end

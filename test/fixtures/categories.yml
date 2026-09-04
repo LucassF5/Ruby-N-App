@@ -1,10 +1,12 @@
 hospital_x:
+  user: jane
   name: Hospital X
   color: "#4f46e5"
   start_time: "07:00"
   end_time: "19:00"
 
 posto_sul:
+  user: jane
   name: Posto Sul
   color: "#16a34a"
   start_time: "13:00"

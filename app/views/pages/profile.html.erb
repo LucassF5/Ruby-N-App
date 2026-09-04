@@ -1,4 +1,12 @@
 <% content_for :title, "Profile" %>
 
 <h1 class="text-2xl font-semibold mb-4">Profile</h1>
-<p class="text-slate-600">This is the Profile tab.</p>
+
+<% if Current.user.avatar.attached? %>
+  <%= image_tag Current.user.avatar, class: "w-20 h-20 rounded-full object-cover mb-4" %>
+<% end %>
+
+<p class="text-slate-900 font-medium"><%= Current.user.name %></p>
+<p class="text-slate-600"><%= Current.user.email_address %></p>
+
+<%= link_to "Editar em Settings", edit_settings_path, class: "inline-block mt-4 text-indigo-600 font-medium hover:underline" %>

@@ -2,6 +2,7 @@ require "test_helper"
 
 class CategoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    sign_in_as users(:jane)
     @category = categories(:hospital_x)
   end
 
@@ -51,10 +52,23 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "destroying category nullifies associated shifts instead of blocking" do
-    shift = Shift.create!(date: Date.new(2026, 9, 10), category: @category)
+    shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 10), category: @category)
 
     delete category_url(@category)
 
     assert_nil shift.reload.category_id
+  end
+
+  test "cannot edit another user's category" do
+    other_category = Category.create!(user: users(:john), name: "Clínica Y", color: "#000000", start_time: "08:00", end_time: "16:00")
+
+    get edit_category_url(other_category)
+
+    assert_response :not_found
+  end
+
+  test "created category belongs to the signed-in user" do
+    post categories_url, params: { category: { name: "Hospital Y", color: "#f97316", start_time: "08:00", end_time: "20:00" } }
+    assert_equal users(:jane), Category.last.user
   end
 end

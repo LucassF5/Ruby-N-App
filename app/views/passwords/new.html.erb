@@ -1,0 +1,12 @@
+<% content_for :title, "Esqueci minha senha" %>
+
+<h1 class="text-2xl font-semibold mb-4">Esqueci minha senha</h1>
+
+<%= form_with url: passwords_path, class: "space-y-4 max-w-sm" do |form| %>
+  <div>
+    <%= form.label :email_address, "Email", class: "block text-sm font-medium mb-1" %>
+    <%= form.email_field :email_address, required: true, autofocus: true, class: "w-full border border-slate-300 rounded px-3 py-2" %>
+  </div>
+
+  <%= form.submit "Enviar link de redefinição", class: "bg-indigo-600 text-white rounded px-4 py-2 font-medium" %>
+<% end %>
