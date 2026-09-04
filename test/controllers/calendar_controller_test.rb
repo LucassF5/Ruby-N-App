@@ -84,4 +84,14 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to calendar_day_path(date: "2026-09-20")
   end
+
+  test "day modal's Remover button includes return_to so deleting redirects back to the same day" do
+    category = categories(:hospital_x)
+    Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
+
+    get calendar_day_url(date: "2026-09-20")
+
+    assert_response :success
+    assert_match "return_to=%2Fcalendar%2F2026-09-20", response.body
+  end
 end
