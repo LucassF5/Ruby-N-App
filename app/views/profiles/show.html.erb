@@ -1,0 +1,37 @@
+<% content_for :title, "Profile" %>
+
+<h1 class="text-2xl font-semibold mb-4">Profile</h1>
+
+<div class="bg-white border border-slate-200 rounded-lg p-4 mb-6 flex items-center gap-4">
+  <% if @user.avatar.attached? && @user.avatar.attachment.persisted? %>
+    <%= image_tag @user.avatar, class: "w-16 h-16 rounded-full object-cover" %>
+  <% end %>
+  <div>
+    <p class="text-slate-900 font-medium"><%= @user.name %></p>
+    <p class="text-slate-600"><%= @user.email_address %></p>
+  </div>
+</div>
+
+<%= form_with model: @user, url: profile_path, method: :patch, multipart: true, class: "space-y-4 max-w-sm" do |form| %>
+  <% if @user.errors.any? %>
+    <ul class="text-red-600 text-sm">
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= render "shared/field", form: form, attribute: :name, label: "Nome" %>
+  <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email %>
+  <%= render "shared/field", form: form, attribute: :avatar, label: "Foto de perfil", type: :file %>
+
+  <fieldset class="border-t border-slate-200 pt-4">
+    <legend class="text-sm font-medium mb-2">Trocar senha (opcional)</legend>
+
+    <%= render "shared/field", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
+    <%= render "shared/field", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
+    <%= render "shared/field", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" } %>
+  </fieldset>
+
+  <%= form.submit "Salvar", class: "bg-[#007AFF] hover:bg-[#0066CC] text-white rounded px-4 py-2 font-medium cursor-pointer" %>
+<% end %>

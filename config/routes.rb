@@ -14,8 +14,7 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  get "profile" => "pages#profile"
-  resource :settings, only: %i[ edit update ]
+  resource :profile, only: %i[ show update ]
 
   resources :categories, except: [:show]
   resources :shifts, except: [:show]
