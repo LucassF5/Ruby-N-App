@@ -9,4 +9,10 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get profile_url
     assert_response :success
   end
+
+  test "profile shows the signed-in user's name and email" do
+    get profile_url
+    assert_match users(:jane).name, response.body
+    assert_match users(:jane).email_address, response.body
+  end
 end
