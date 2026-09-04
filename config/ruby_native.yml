@@ -97,13 +97,13 @@ tabs:
     path: /
     icon: house
 
+  - title: Calendário
+    path: /calendar
+    icon: calendar
+
   - title: Profile
     path: /profile
     icon: person
-
-  - title: Settings
-    path: /settings
-    icon: gear
 
   # Per-tab options (add to any tab above):
   #
