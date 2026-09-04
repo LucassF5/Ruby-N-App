@@ -10,6 +10,12 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "does not show the redundant 'Ver lista' link now that Home and Calendário are separate tabs" do
+    get calendar_url
+    assert_response :success
+    assert_no_match "Ver lista", response.body
+  end
+
   test "should get calendar for a given month" do
     get calendar_url(month: "2026-12")
     assert_response :success

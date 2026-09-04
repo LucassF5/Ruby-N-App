@@ -2,12 +2,12 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-semibold"><%= @month.strftime("%B %Y") %></h1>
-  <%= link_to "Gerenciar categorias", categories_path, class: "text-sm text-indigo-600 hover:underline" %>
+  <%= render "shared/link_action", text: "Gerenciar categorias", url: categories_path %>
 </div>
 
 <div class="flex justify-between items-center mb-4">
-  <%= link_to "‹ Mês anterior", calendar_path(month: (@month - 1.month).strftime("%Y-%m")), class: "text-indigo-600 hover:underline text-sm" %>
-  <%= link_to "Próximo mês ›", calendar_path(month: (@month + 1.month).strftime("%Y-%m")), class: "text-indigo-600 hover:underline text-sm" %>
+  <%= render "shared/link_action", text: "‹ Mês anterior", url: calendar_path(month: (@month - 1.month).strftime("%Y-%m")) %>
+  <%= render "shared/link_action", text: "Próximo mês ›", url: calendar_path(month: (@month + 1.month).strftime("%Y-%m")) %>
 </div>
 
 <div class="grid grid-cols-7 gap-2 text-center text-sm font-medium text-slate-500 mb-2">
@@ -34,5 +34,3 @@
 </div>
 
 <%= turbo_frame_tag "day_modal" %>
-
-<%= link_to "Ver lista", root_path, class: "text-sm text-indigo-600 hover:underline mt-4 inline-block" %>
