@@ -1,24 +1,19 @@
 <% content_for :title, "Entrar" %>
 
-<h1 class="text-2xl font-semibold mb-4">Entrar</h1>
+<div class="max-w-sm mx-auto mt-8 bg-white border border-slate-200 rounded-lg p-6">
+  <h1 class="text-2xl font-semibold mb-4">Entrar</h1>
 
-<%= form_with url: session_path, class: "space-y-4 max-w-sm" do |form| %>
-  <div>
-    <%= form.label :email_address, "Email", class: "block text-sm font-medium mb-1" %>
-    <%= form.email_field :email_address, required: true, autofocus: true, class: "w-full border border-slate-300 rounded px-3 py-2" %>
-  </div>
+  <%= form_with url: session_path, class: "space-y-4" do |form| %>
+    <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true, autofocus: true } %>
+    <%= render "shared/field", form: form, attribute: :password, label: "Senha", type: :password, options: { required: true, autocomplete: "current-password" } %>
 
-  <div>
-    <%= form.label :password, "Senha", class: "block text-sm font-medium mb-1" %>
-    <%= form.password_field :password, required: true, autocomplete: "current-password", class: "w-full border border-slate-300 rounded px-3 py-2" %>
-  </div>
+    <%= form.submit "Entrar", class: "bg-[#007AFF] hover:bg-[#0066CC] text-white rounded px-4 py-2 font-medium cursor-pointer" %>
+  <% end %>
 
-  <%= form.submit "Entrar", class: "bg-indigo-600 text-white rounded px-4 py-2 font-medium" %>
-<% end %>
+  <%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 bg-black hover:bg-slate-800 text-white rounded px-4 py-2 font-medium cursor-pointer" %>
 
-<%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 bg-black text-white rounded px-4 py-2 font-medium" %>
-
-<p class="mt-4 text-sm">
-  <%= link_to "Criar conta", new_registration_path %> ·
-  <%= link_to "Esqueci minha senha", new_password_path %>
-</p>
+  <p class="mt-4 text-sm flex gap-2">
+    <%= render "shared/link_action", text: "Criar conta", url: new_registration_path %> ·
+    <%= render "shared/link_action", text: "Esqueci minha senha", url: new_password_path %>
+  </p>
+</div>
