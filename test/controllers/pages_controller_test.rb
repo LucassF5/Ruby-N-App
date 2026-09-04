@@ -9,9 +9,4 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get profile_url
     assert_response :success
   end
-
-  test "should get settings" do
-    get settings_url
-    assert_response :success
-  end
 end

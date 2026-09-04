@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   get "profile" => "pages#profile"
-  get "settings" => "pages#settings"
+  resource :settings, only: %i[ edit update ]
 
   resources :categories, except: [:show]
   resources :shifts, except: [:show]
