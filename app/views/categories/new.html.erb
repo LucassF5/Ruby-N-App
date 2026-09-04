@@ -1,7 +1,12 @@
 <% content_for :title, "Nova Categoria" %>
 
-<h1 class="text-large-title text-on-surface mb-6">Nova Categoria</h1>
+<%= native_form_tag %>
+<%= native_navbar_tag("Nova Categoria") do |navbar| %>
+  <% navbar.submit_button %>
+<% end %>
+
+<h1 class="text-large-title text-on-surface mb-6 native-hidden">Nova Categoria</h1>
 
 <%= render "form", category: @category %>
 
-<%= render "shared/link_action", text: "Voltar", url: categories_path %>
+<%= render "shared/link_action", text: "Voltar", url: categories_path, html: { class: "native-hidden" } %>

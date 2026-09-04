@@ -1,9 +1,8 @@
 <% content_for :title, "Categorias" %>
 
-<div class="flex justify-between items-center mb-4">
-  <h1 class="text-title-2 text-on-surface">Categorias</h1>
-  <%= render "shared/button_primary", text: "Nova categoria", url: new_category_path %>
-</div>
+<%= native_navbar_tag("Categorias") do |navbar| %>
+  <% navbar.button icons: { ios: "plus", android: "add" }, href: new_category_path %>
+<% end %>
 
 <% if @categories.empty? %>
   <p class="text-body text-on-surface-variant">Nenhuma categoria cadastrada ainda.</p>
