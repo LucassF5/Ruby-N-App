@@ -91,9 +91,15 @@ class ShiftsController < ApplicationController
     @weeks = calendar.weeks
     @colors_by_day = calendar.colors_by_day
 
+    week_days = (Date.current..(Date.current + 4.days)).to_a
+
     [
       turbo_stream.replace("day_modal", template: "calendar/day"),
-      turbo_stream.replace("calendar_month", partial: "calendar/month_grid")
+      turbo_stream.replace("calendar_month", partial: "calendar/month_grid"),
+      turbo_stream.replace("next_shift_card", partial: "shifts/next_shift_card",
+        locals: { next_shift: Current.user.shifts.where(date: Date.current..).order(:date, :start_time).first }),
+      turbo_stream.replace("week_strip", partial: "shifts/week_strip",
+        locals: { week_days: week_days, colors_by_day: Shift.category_colors_by_date(Current.user, week_days.first..week_days.last) })
     ]
   end
 end

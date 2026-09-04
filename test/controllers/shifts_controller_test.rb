@@ -176,7 +176,7 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_nil @shift.reload.category_id
   end
 
-  test "creating from the calendar day modal refreshes both the day modal and the month grid" do
+  test "creating from the calendar day modal refreshes the day modal, month grid, and Home's next-shift/week-strip widgets" do
     category = categories(:hospital_x)
 
     post shifts_url,
@@ -187,10 +187,12 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "text/vnd.turbo-stream.html", response.media_type
     assert_match "turbo-stream action=\"replace\" target=\"day_modal\"", response.body
     assert_match "turbo-stream action=\"replace\" target=\"calendar_month\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"next_shift_card\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"week_strip\"", response.body
     assert_match category.color, response.body
   end
 
-  test "removing a shift from the calendar day modal refreshes both the day modal and the month grid" do
+  test "removing a shift from the calendar day modal refreshes the day modal, month grid, and Home's next-shift/week-strip widgets" do
     category = categories(:hospital_x)
     shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
 
@@ -201,6 +203,18 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "turbo-stream action=\"replace\" target=\"day_modal\"", response.body
     assert_match "turbo-stream action=\"replace\" target=\"calendar_month\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"next_shift_card\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"week_strip\"", response.body
+  end
+
+  test "creating a shift for today from the day modal shows it as the next shift in the refreshed Home widget" do
+    post shifts_url,
+      params: { shift: { date: Date.current.strftime("%Y-%m-%d"), start_time: "09:00", end_time: "17:00" },
+                return_to: calendar_day_path(date: Date.current.strftime("%Y-%m-%d")) },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_response :success
+    assert_match "Próximo plantão", response.body
   end
 
   test "creating from a non-calendar context still redirects normally even when turbo-stream is accepted" do
