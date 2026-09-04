@@ -4,6 +4,41 @@
   <% navbar.button icons: { ios: "plus", android: "add" }, href: new_shift_path %>
 <% end %>
 
+<div class="flex justify-between items-center mb-4">
+  <h1 class="text-title-2 text-on-surface">Meus Plantões</h1>
+  <div class="flex gap-3 items-center">
+    <%= render "shared/link_action", text: "Ver calendário", url: calendar_path %>
+    <%= render "shared/button_primary", text: "Novo plantão", url: new_shift_path %>
+  </div>
+</div>
+
+<% if @next_shift %>
+  <div class="bg-primary text-on-primary rounded-2xl shadow-sm p-5 mb-6">
+    <p class="text-caption-1 text-on-primary/70">Próximo plantão</p>
+    <p class="text-title-2 mt-1"><%= l(@next_shift.date, format: :long) %></p>
+    <p class="text-callout text-on-primary/90 mt-0.5">
+      <%= @next_shift.start_time.strftime("%H:%M") %>–<%= @next_shift.end_time.strftime("%H:%M") %>
+      <% if @next_shift.category.present? %> · <%= @next_shift.category.name %><% end %>
+    </p>
+  </div>
+<% end %>
+
+<div class="flex gap-2 mb-6 overflow-x-auto">
+  <% %w[Dom Seg Ter Qua Qui Sex Sáb].values_at(*@week_days.map(&:wday)).zip(@week_days).each do |day_name, day| %>
+    <% today = day == Date.current %>
+    <%= link_to calendar_day_path(date: day.strftime("%Y-%m-%d")),
+          class: "flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl w-14 shrink-0 transition-colors #{today ? "bg-primary text-on-primary" : "bg-surface-container-lowest text-on-surface shadow-sm"}" do %>
+      <span class="text-caption-2 uppercase tracking-wider <%= today ? "text-on-primary/70" : "text-on-surface-variant" %>"><%= day_name %></span>
+      <span class="text-headline mt-1"><%= day.day %></span>
+      <div class="flex gap-0.5 mt-1 h-1.5">
+        <% (@colors_by_day[day] || []).first(3).each do |color| %>
+          <span class="w-1.5 h-1.5 rounded-full" style="background-color: <%= today ? "rgba(255,255,255,0.9)" : color %>"></span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
 <% if @shifts.empty? %>
   <p class="text-body text-on-surface-variant">Nenhum plantão cadastrado ainda.</p>
 <% else %>

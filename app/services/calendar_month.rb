@@ -27,11 +27,6 @@ class CalendarMonth
     end
 
     def compute_colors_by_day(user, weeks)
-      user.shifts.where(date: weeks.first.first..weeks.last.last)
-          .includes(:category)
-          .group_by(&:date)
-          .transform_values do |shifts|
-            shifts.uniq { |s| s.category_id }.map { |s| s.category&.color || "#94a3b8" }
-          end
+      Shift.category_colors_by_date(user, weeks.first.first..weeks.last.last)
     end
 end

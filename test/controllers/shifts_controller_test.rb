@@ -18,6 +18,35 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_match "bg-error", response.body
   end
 
+  test "index highlights the earliest upcoming shift as the next one" do
+    get root_url
+    assert_response :success
+    assert_match "Próximo plantão", response.body
+    assert_match I18n.l(@shift.date, format: :long), response.body
+  end
+
+  test "index hides the next-shift card when there are no upcoming shifts" do
+    Shift.where(date: Date.current..).destroy_all
+
+    get root_url
+
+    assert_response :success
+    assert_no_match "Próximo plantão", response.body
+  end
+
+  test "index shows a 5-day strip starting today with a dot for a scheduled day" do
+    category = categories(:hospital_x)
+    Shift.create!(user: users(:jane), date: Date.current, category: category)
+
+    get root_url
+
+    assert_response :success
+    assert_match category.color, response.body
+    (Date.current..Date.current + 4.days).each do |day|
+      assert_match day.day.to_s, response.body
+    end
+  end
+
   test "should get new" do
     get new_shift_url
     assert_response :success

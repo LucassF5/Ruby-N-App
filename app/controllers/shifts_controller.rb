@@ -3,6 +3,9 @@ class ShiftsController < ApplicationController
 
   def index
     @shifts = Current.user.shifts.order(:date, :start_time).includes(:category)
+    @next_shift = Current.user.shifts.where(date: Date.current..).order(:date, :start_time).first
+    @week_days = (Date.current..(Date.current + 4.days)).to_a
+    @colors_by_day = Shift.category_colors_by_date(Current.user, @week_days.first..@week_days.last)
   end
 
   def new
