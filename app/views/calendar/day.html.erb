@@ -36,7 +36,7 @@
           <%= hidden_field_tag "return_to", calendar_day_path(date: @date.strftime("%Y-%m-%d")) %>
           <%= label_tag "shift_category_id", "Categoria", class: "text-sm font-medium" %>
           <%= collection_select(:shift, :category_id, @categories, :id, :name, {}, class: "border border-slate-300 rounded px-3 py-2") %>
-          <%= submit_tag "Adicionar plantão", class: "self-start bg-[#007AFF] hover:bg-[#0066CC] text-white px-4 py-2 rounded font-medium cursor-pointer" %>
+          <%= submit_tag "Adicionar plantão", class: "self-start bg-gradient-to-b from-primary-light to-primary-deep text-white px-5 py-2.5 rounded-xl font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 active:shadow-none transition-all duration-150 cursor-pointer" %>
         <% end %>
       <% end %>
     </div>

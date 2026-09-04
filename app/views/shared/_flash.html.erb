@@ -1,0 +1,14 @@
+<% if notice.present? %>
+  <div class="mb-4 px-4 py-3 rounded-xl bg-white border border-slate-200 text-ink text-sm font-medium" role="status">
+    <%= notice %>
+  </div>
+<% end %>
+
+<% if alert.present? %>
+  <div class="mb-4 px-4 py-3 rounded-xl bg-danger-tint border border-danger/30 text-danger-deep text-sm font-medium flex items-center gap-2" role="alert">
+    <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M8.485 3.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.63-1.516 2.63H3.72c-1.346 0-2.189-1.463-1.515-2.63L8.485 3.495ZM10 7a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 7Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+    </svg>
+    <%= alert %>
+  </div>
+<% end %>

@@ -1,16 +1,16 @@
 <% content_for :title, "Entrar" %>
 
-<div class="max-w-sm mx-auto mt-8 bg-white border border-slate-200 rounded-lg p-6">
-  <h1 class="text-2xl font-semibold mb-4">Entrar</h1>
+<div class="max-w-sm mx-auto mt-8 bg-surface rounded-2xl shadow-xl p-8">
+  <h1 class="font-display text-3xl font-bold text-ink mb-6">Entrar</h1>
 
   <%= form_with url: session_path, class: "space-y-4" do |form| %>
     <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true, autofocus: true } %>
     <%= render "shared/field", form: form, attribute: :password, label: "Senha", type: :password, options: { required: true, autocomplete: "current-password" } %>
 
-    <%= form.submit "Entrar", class: "bg-[#007AFF] hover:bg-[#0066CC] text-white rounded px-4 py-2 font-medium cursor-pointer" %>
+    <%= form.submit "Entrar", class: "w-full bg-gradient-to-b from-primary-light to-primary-deep text-white rounded-xl px-5 py-2.5 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 active:shadow-none transition-all duration-150 cursor-pointer" %>
   <% end %>
 
-  <%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 bg-black hover:bg-slate-800 text-white rounded px-4 py-2 font-medium cursor-pointer" %>
+  <%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 w-full bg-gradient-to-b from-slate-800 to-black text-white rounded-xl px-5 py-2.5 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 active:shadow-none transition-all duration-150 cursor-pointer" %>
 
   <p class="mt-4 text-sm flex gap-2">
     <%= render "shared/link_action", text: "Criar conta", url: new_registration_path %> ·

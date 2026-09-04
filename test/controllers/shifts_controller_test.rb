@@ -14,7 +14,7 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
   test "index uses the primary button partial for the new-shift action" do
     get root_url
     assert_response :success
-    assert_match "bg-[#007AFF]", response.body
+    assert_match "from-primary-light", response.body
     assert_match "Novo plantão", response.body
   end
 
@@ -22,7 +22,7 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     get root_url
     assert_response :success
     assert_match "Remover", response.body
-    assert_match "bg-red-600", response.body
+    assert_match "from-danger-light", response.body
   end
 
   test "should get new" do

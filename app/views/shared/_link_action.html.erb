@@ -2,8 +2,8 @@
   variant = local_assigns.fetch(:variant, :primary)
   link_method = local_assigns.fetch(:method, :get)
   extra_html = local_assigns.fetch(:html, {})
-  color = variant == :neutral ? "text-slate-500" : "text-[#007AFF]"
-  base_css = "#{color} hover:underline text-sm"
+  color = variant == :neutral ? "text-slate-500" : "text-primary"
+  base_css = "#{color} hover:underline text-sm font-medium"
   css = [base_css, extra_html[:class]].compact.join(" ")
 %>
 <% if link_method == :get %>

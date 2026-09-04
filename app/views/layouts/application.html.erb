@@ -20,6 +20,10 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
     <%= stylesheet_link_tag "tailwind" %>
@@ -28,13 +32,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-slate-50 text-slate-900">
+  <body class="bg-bg text-ink font-sans">
 
-    <%= native_tabs_tag %> 
-    
-    <%= render "layouts/navbar" unless native_app? %>
+    <%= native_tabs_tag(enabled: authenticated?) %>
+
+    <%= render "layouts/navbar" if authenticated? && !native_app? %>
 
     <main class="px-4 pb-8 native-inset">
+  <%= render "shared/flash" %>
   <%= yield %>
 </main>
   </body>

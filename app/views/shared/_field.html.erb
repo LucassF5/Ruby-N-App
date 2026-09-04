@@ -1,17 +1,17 @@
 <%
   field_type = local_assigns.fetch(:type, :text)
   options = local_assigns.fetch(:options, {})
-  input_css = "w-full border border-slate-300 rounded px-3 py-2"
+  input_css = "w-full border border-slate-300 rounded-lg px-3 py-2.5 text-ink transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
 %>
 <div>
-  <%= form.label attribute, label, class: "block text-sm font-medium mb-1" %>
+  <%= form.label attribute, label, class: "block text-sm font-medium text-ink mb-1" %>
   <% case field_type %>
   <% when :email %>
     <%= form.email_field attribute, options.reverse_merge(class: input_css) %>
   <% when :password %>
     <%= form.password_field attribute, options.reverse_merge(class: input_css) %>
   <% when :file %>
-    <%= form.file_field attribute, options.reverse_merge(class: "w-full") %>
+    <%= form.file_field attribute, options.reverse_merge(class: "w-full text-sm") %>
   <% else %>
     <%= form.text_field attribute, options.reverse_merge(class: input_css) %>
   <% end %>

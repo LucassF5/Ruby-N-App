@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #007AFF;
+  --color-primary-light: #2E9BFF;
+  --color-primary-deep: #0060E6;
+  --color-ink: #12151C;
+  --color-surface: #FFFFFF;
+  --color-bg: #F5F6F8;
+  --color-danger: #E5484D;
+  --color-danger-light: #F76166;
+  --color-danger-deep: #C81E24;
+  --color-danger-tint: #FCEBEC;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}

@@ -1,7 +1,7 @@
 <% content_for :title, "Calendário" %>
 
 <div class="flex justify-between items-center mb-4">
-  <h1 class="text-2xl font-semibold"><%= @month.strftime("%B %Y") %></h1>
+  <h1 class="font-display text-2xl font-bold text-ink"><%= @month.strftime("%B %Y") %></h1>
   <%= render "shared/link_action", text: "Gerenciar categorias", url: categories_path %>
 </div>
 

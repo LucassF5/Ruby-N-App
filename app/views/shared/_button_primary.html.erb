@@ -1,7 +1,7 @@
 <%
   button_method = local_assigns.fetch(:method, :get)
   extra_html = local_assigns.fetch(:html, {})
-  base_css = "inline-block bg-[#007AFF] hover:bg-[#0066CC] text-white px-4 py-2 rounded font-medium"
+  base_css = "inline-block bg-gradient-to-b from-primary-light to-primary-deep text-white px-5 py-2.5 rounded-xl font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 active:shadow-none transition-all duration-150"
   css = [base_css, extra_html[:class]].compact.join(" ")
 %>
 <% if button_method == :get %>
