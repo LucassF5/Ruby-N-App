@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email_address, presence: true, uniqueness: true
+  validates :password, confirmation: true, allow_nil: true
 
   private
     def password_salt
