@@ -346,7 +346,7 @@ DEPENDENCIES
   importmap-rails
   omniauth (~> 2.1)
   omniauth-apple (~> 1.2)
-  omniauth-rails_csrf_protection (~> 2.0)
+  omniauth-rails_csrf_protection (~> 2.0.1)
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.3, >= 8.1.3.1)
