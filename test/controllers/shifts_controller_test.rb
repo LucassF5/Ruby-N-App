@@ -145,4 +145,39 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_nil @shift.reload.category_id
   end
+
+  test "creating from the calendar day modal refreshes both the day modal and the month grid" do
+    category = categories(:hospital_x)
+
+    post shifts_url,
+      params: { shift: { date: "2026-09-20", category_id: category.id }, return_to: calendar_day_path(date: "2026-09-20") },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match "turbo-stream action=\"replace\" target=\"day_modal\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"calendar_month\"", response.body
+    assert_match category.color, response.body
+  end
+
+  test "removing a shift from the calendar day modal refreshes both the day modal and the month grid" do
+    category = categories(:hospital_x)
+    shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
+
+    delete shift_url(shift),
+      params: { return_to: calendar_day_path(date: "2026-09-20") },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_response :success
+    assert_match "turbo-stream action=\"replace\" target=\"day_modal\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"calendar_month\"", response.body
+  end
+
+  test "creating from a non-calendar context still redirects normally even when turbo-stream is accepted" do
+    post shifts_url,
+      params: { shift: { date: "2026-09-15", start_time: "09:00", end_time: "17:00" } },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_redirected_to root_url
+  end
 end

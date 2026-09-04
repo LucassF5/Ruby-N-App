@@ -5,34 +5,6 @@
   <%= render "shared/link_action", text: "Gerenciar categorias", url: categories_path %>
 </div>
 
-<section class="bg-surface-container-lowest rounded-2xl shadow-sm p-4">
-  <div class="flex items-center justify-between mb-4">
-    <%= render "shared/link_action", text: "‹ Mês anterior", url: calendar_path(month: (@month - 1.month).strftime("%Y-%m")) %>
-    <%= render "shared/link_action", text: "Próximo mês ›", url: calendar_path(month: (@month + 1.month).strftime("%Y-%m")) %>
-  </div>
-
-  <div class="grid grid-cols-7 text-center mb-2">
-    <% %w[Dom Seg Ter Qua Qui Sex Sáb].each do |day_name| %>
-      <span class="text-caption-2 text-outline"><%= day_name %></span>
-    <% end %>
-  </div>
-
-  <div class="flex flex-col gap-1.5">
-    <% @weeks.each do |week| %>
-      <div class="grid grid-cols-7 gap-y-1.5">
-        <% week.each do |day| %>
-          <%= link_to calendar_day_path(date: day.strftime("%Y-%m-%d")), data: { turbo_frame: "day_modal" }, class: "h-10 flex flex-col items-center justify-center rounded-full #{"text-outline-variant" unless day.month == @month.month}" do %>
-            <span class="text-body text-on-surface"><%= day.day %></span>
-            <div class="flex gap-0.5 mt-0.5">
-              <% (@colors_by_day[day] || []).each do |color| %>
-                <span class="w-1 h-1 rounded-full" style="background-color: <%= color %>"></span>
-              <% end %>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</section>
+<%= render "month_grid" %>
 
 <%= turbo_frame_tag "day_modal" %>

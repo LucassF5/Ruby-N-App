@@ -14,7 +14,16 @@ class ShiftsController < ApplicationController
     @shift = Current.user.shifts.new(shift_params)
 
     if @shift.save
-      redirect_to destination_after_save, notice: "Plantão criado."
+      respond_to do |format|
+        format.turbo_stream do
+          if from_calendar_day?
+            render turbo_stream: calendar_day_streams(@shift.date)
+          else
+            redirect_to destination_after_save, notice: "Plantão criado."
+          end
+        end
+        format.html { redirect_to destination_after_save, notice: "Plantão criado." }
+      end
     else
       @categories = Current.user.categories.order(:name)
       render :new, status: :unprocessable_entity
@@ -35,8 +44,19 @@ class ShiftsController < ApplicationController
   end
 
   def destroy
+    date = @shift.date
     @shift.destroy
-    redirect_to destination_after_save, notice: "Plantão removido."
+
+    respond_to do |format|
+      format.turbo_stream do
+        if from_calendar_day?
+          render turbo_stream: calendar_day_streams(date)
+        else
+          redirect_to destination_after_save, notice: "Plantão removido."
+        end
+      end
+      format.html { redirect_to destination_after_save, notice: "Plantão removido." }
+    end
   end
 
   private
@@ -52,5 +72,25 @@ class ShiftsController < ApplicationController
   def destination_after_save
     return_to = params[:return_to]
     return_to.present? && return_to.start_with?("/") && !return_to.start_with?("//") ? return_to : root_path
+  end
+
+  def from_calendar_day?
+    params[:return_to].present? && params[:return_to].start_with?("/calendar/")
+  end
+
+  def calendar_day_streams(date)
+    @date = date
+    @shifts = Current.user.shifts.where(date: @date).includes(:category).order(:start_time)
+    @categories = Current.user.categories.order(:name)
+
+    calendar = CalendarMonth.new(Current.user, date: @date)
+    @month = calendar.month
+    @weeks = calendar.weeks
+    @colors_by_day = calendar.colors_by_day
+
+    [
+      turbo_stream.replace("day_modal", template: "calendar/day"),
+      turbo_stream.replace("calendar_month", partial: "calendar/month_grid")
+    ]
   end
 end
