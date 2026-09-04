@@ -16,6 +16,8 @@
   <%= form.submit "Entrar", class: "bg-indigo-600 text-white rounded px-4 py-2 font-medium" %>
 <% end %>
 
+<%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 bg-black text-white rounded px-4 py-2 font-medium" %>
+
 <p class="mt-4 text-sm">
   <%= link_to "Criar conta", new_registration_path %> ·
   <%= link_to "Esqueci minha senha", new_password_path %>

@@ -23,3 +23,6 @@ gem "turbo-rails"
 gem "importmap-rails"
 
 gem "ruby_native", "~> 0.15.2"
+gem "omniauth", "~> 2.1"
+gem "omniauth-apple", "~> 1.2"
+gem "omniauth-rails_csrf_protection", "~> 1.0"
