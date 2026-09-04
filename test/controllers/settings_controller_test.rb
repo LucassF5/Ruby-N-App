@@ -28,4 +28,13 @@ class SettingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_not users(:jane).reload.authenticate("newpassword")
   end
+
+  test "updates avatar" do
+    file = fixture_file_upload("avatar.png", "image/png")
+
+    patch settings_url, params: { user: { avatar: file } }
+
+    assert_redirected_to edit_settings_url
+    assert users(:jane).reload.avatar.attached?
+  end
 end

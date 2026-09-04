@@ -21,7 +21,7 @@ class SettingsController < ApplicationController
 
   private
     def settings_params
-      params.require(:user).permit(:name, :email_address, :current_password, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email_address, :current_password, :password, :password_confirmation, :avatar)
     end
 
     def password_change_requested?
