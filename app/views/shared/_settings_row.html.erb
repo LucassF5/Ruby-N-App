@@ -1,0 +1,17 @@
+<%
+  field_type = local_assigns.fetch(:type, :text)
+  options = local_assigns.fetch(:options, {})
+  last = local_assigns.fetch(:last, false)
+  input_css = "w-full bg-transparent text-body text-on-surface placeholder:text-outline focus:outline-none"
+%>
+<div class="px-4 py-3 <%= "border-b border-outline-variant/60" unless last %>">
+  <%= form.label attribute, label, class: "block text-caption-2 text-on-surface-variant mb-0.5" %>
+  <% case field_type %>
+  <% when :email %>
+    <%= form.email_field attribute, options.reverse_merge(class: input_css) %>
+  <% when :password %>
+    <%= form.password_field attribute, options.reverse_merge(class: input_css) %>
+  <% else %>
+    <%= form.text_field attribute, options.reverse_merge(class: input_css) %>
+  <% end %>
+</div>

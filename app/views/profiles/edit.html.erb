@@ -7,32 +7,52 @@
 
 <h1 class="text-large-title text-on-surface mb-6 native-hidden">Editar Perfil</h1>
 
-<%= form_with model: @user, url: profile_path, method: :patch, multipart: true, class: "space-y-4 max-w-sm" do |form| %>
+<%= form_with model: @user, url: profile_path, method: :patch, multipart: true, class: "max-w-sm" do |form| %>
   <% if @user.errors.any? %>
-    <ul class="text-error text-footnote">
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+    <div class="mb-4 px-4 py-3 rounded-2xl bg-error-container text-on-error-container text-callout">
+      <ul class="list-disc list-inside">
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <%= render "shared/field", form: form, attribute: :name, label: "Nome" %>
-  <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email %>
-  <%= render "shared/field", form: form, attribute: :avatar, label: "Foto de perfil", type: :file %>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-6 mb-6 flex flex-col items-center gap-3">
+    <label for="user_avatar" class="relative cursor-pointer">
+      <% if @user.avatar.attached? && @user.avatar.attachment.persisted? %>
+        <%= image_tag @user.avatar, class: "w-24 h-24 rounded-full object-cover" %>
+      <% else %>
+        <span class="w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center">
+          <span class="material-symbols-outlined text-outline-variant text-[56px] leading-none">account_circle</span>
+        </span>
+      <% end %>
+      <span class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm ring-2 ring-surface-container-lowest">
+        <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+      </span>
+    </label>
+    <%= form.file_field :avatar, id: "user_avatar", accept: "image/*", class: "hidden" %>
+    <p class="text-footnote text-on-surface-variant">Toque na foto para alterar</p>
+  </div>
 
-  <fieldset class="border-t border-outline-variant pt-4 flex flex-col gap-4">
-    <legend class="text-caption-1 text-on-surface-variant mb-2">Trocar senha (opcional)</legend>
+  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Informações</p>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-6 overflow-hidden">
+    <%= render "shared/settings_row", form: form, attribute: :name, label: "Nome" %>
+    <%= render "shared/settings_row", form: form, attribute: :email_address, label: "Email", type: :email, last: true %>
+  </div>
 
-    <%= render "shared/field", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
-    <%= render "shared/field", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
-    <%= render "shared/field", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" } %>
-  </fieldset>
+  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Segurança</p>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-6 overflow-hidden">
+    <%= render "shared/settings_row", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
+    <%= render "shared/settings_row", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
+    <%= render "shared/settings_row", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" }, last: true %>
+  </div>
 
   <div class="native-hidden">
-    <%= form.submit "Salvar", class: "bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
+    <%= form.submit "Salvar", class: "w-full bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
   </div>
 <% end %>
 
-<div class="max-w-sm native-hidden">
+<div class="max-w-sm mt-4 native-hidden">
   <%= render "shared/link_action", text: "Voltar", url: profile_path, variant: :neutral %>
 </div>
