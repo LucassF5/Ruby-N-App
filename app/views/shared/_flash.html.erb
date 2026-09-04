@@ -1,0 +1,12 @@
+<% if notice.present? %>
+  <div class="mb-4 px-4 py-3 rounded-2xl bg-surface-container-lowest shadow-sm text-callout text-on-surface" role="status">
+    <%= notice %>
+  </div>
+<% end %>
+
+<% if alert.present? %>
+  <div class="mb-4 px-4 py-3 rounded-2xl bg-error-container text-on-error-container text-callout flex items-center gap-2" role="alert">
+    <span class="material-symbols-outlined text-[20px] shrink-0">error</span>
+    <%= alert %>
+  </div>
+<% end %>

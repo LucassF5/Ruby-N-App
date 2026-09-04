@@ -1,0 +1,42 @@
+<% content_for :title, "Profile" %>
+
+<%= native_navbar_tag("Profile") do |navbar| %>
+  <% navbar.button icons: { ios: "pencil", android: "edit" }, href: edit_profile_path %>
+<% end %>
+
+<h1 class="text-large-title text-on-surface mb-6 native-hidden">Profile</h1>
+
+<div class="flex flex-col items-center text-center mb-8 mt-2">
+  <% if @user.avatar.attached? && @user.avatar.attachment.persisted? %>
+    <%= image_tag @user.avatar, class: "w-24 h-24 rounded-full object-cover shadow-sm ring-4 ring-primary-container" %>
+  <% else %>
+    <span class="w-24 h-24 rounded-full bg-surface-container-lowest shadow-sm ring-4 ring-primary-container flex items-center justify-center">
+      <span class="material-symbols-outlined text-outline-variant text-[56px] leading-none">account_circle</span>
+    </span>
+  <% end %>
+  <p class="text-title-2 text-on-surface mt-4"><%= @user.name %></p>
+  <p class="text-subheadline text-on-surface-variant mt-1"><%= @user.email_address %></p>
+</div>
+
+<div class="max-w-sm mx-auto native-hidden">
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
+    <%= link_to edit_profile_path, class: "flex items-center justify-between px-4 py-3.5 active:bg-surface-container-low transition-colors" do %>
+      <span class="flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shrink-0">
+          <span class="material-symbols-outlined text-[18px]">edit</span>
+        </span>
+        <span class="text-callout text-on-surface">Editar perfil</span>
+      </span>
+      <span class="material-symbols-outlined text-outline-variant text-[20px]">chevron_right</span>
+    <% end %>
+
+    <div class="border-t border-outline-variant/60"></div>
+
+    <%= button_to session_path, method: :delete, class: "w-full flex items-center gap-3 px-4 py-3.5 text-left active:bg-surface-container-low transition-colors cursor-pointer" do %>
+      <span class="w-8 h-8 rounded-lg bg-error-container flex items-center justify-center text-on-error-container shrink-0">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+      </span>
+      <span class="text-callout text-error">Sair</span>
+    <% end %>
+  </div>
+</div>

@@ -1,7 +1,13 @@
 <% content_for :title, "Editar Plantão" %>
 
-<h1 class="text-2xl font-semibold mb-4">Editar Plantão</h1>
+
+<%= native_form_tag %>
+<%= native_navbar_tag("Editar Plantão") do |navbar| %>
+  <% navbar.submit_button %>
+<% end %>
+
+<h1 class="text-large-title text-on-surface mb-6 native-hidden">Editar Plantão</h1>
 
 <%= render "form", shift: @shift %>
 
-<%= link_to "Voltar", root_path, class: "text-sm text-indigo-600 hover:underline" %>
+<%= render "shared/link_action", text: "Voltar", url: root_path, html: { class: "native-hidden" } %>

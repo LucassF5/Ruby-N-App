@@ -1,23 +1,25 @@
-<%= form_with model: category, class: "bg-white border border-slate-200 rounded-lg p-4 mb-8 flex flex-col gap-3" do |f| %>
+<%= native_keyboard_tag(toolbar: false) %>
+
+<%= form_with model: category do |f| %>
   <% if category.errors.any? %>
-    <ul class="text-red-600 text-sm">
-      <% category.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
+    <div class="mb-4 px-4 py-3 rounded-2xl bg-error-container text-on-error-container text-callout">
+      <ul class="list-disc list-inside">
+        <% category.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
-  <%= f.label :name, "Nome", class: "text-sm font-medium" %>
-  <%= f.text_field :name, class: "border border-slate-300 rounded px-3 py-2" %>
+  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Detalhes da categoria</p>
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-8 overflow-hidden">
+    <%= render "shared/form_row", form: f, attribute: :name, label: "Nome" %>
+    <%= render "shared/form_row", form: f, attribute: :color, label: "Cor", type: :color %>
+    <%= render "shared/form_row", form: f, attribute: :start_time, label: "Horário de início", type: :time %>
+    <%= render "shared/form_row", form: f, attribute: :end_time, label: "Horário de término", type: :time, last: true %>
+  </div>
 
-  <%= f.label :color, "Cor", class: "text-sm font-medium" %>
-  <%= f.color_field :color, class: "border border-slate-300 rounded h-10 w-20" %>
-
-  <%= f.label :start_time, "Horário de início", class: "text-sm font-medium" %>
-  <%= f.time_field :start_time, class: "border border-slate-300 rounded px-3 py-2" %>
-
-  <%= f.label :end_time, "Horário de término", class: "text-sm font-medium" %>
-  <%= f.time_field :end_time, class: "border border-slate-300 rounded px-3 py-2" %>
-
-  <%= f.submit "Salvar", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+  <div class="native-hidden">
+    <%= f.submit "Salvar", class: "self-start bg-primary text-on-primary px-5 py-3 rounded-full text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
+  </div>
 <% end %>

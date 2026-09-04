@@ -1,42 +1,49 @@
 <% content_for :title, "Meus Plantões" %>
 
+<%= native_navbar_tag("Meus Plantões") do |navbar| %>
+  <% navbar.button icons: { ios: "plus", android: "add" }, href: new_shift_path %>
+<% end %>
+
 <div class="flex justify-between items-center mb-4">
-  <h1 class="text-2xl font-semibold">Meus Plantões</h1>
+  <h1 class="text-title-2 text-on-surface">Meus Plantões</h1>
   <div class="flex gap-3 items-center">
-    <%= link_to "Ver calendário", calendar_path, class: "text-indigo-600 text-sm hover:underline" %>
-    <%= link_to "Novo plantão", new_shift_path, class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+    <%= render "shared/link_action", text: "Ver calendário", url: calendar_path %>
+    <%= render "shared/button_primary", text: "Novo plantão", url: new_shift_path %>
   </div>
 </div>
 
+<%= render "next_shift_card", next_shift: @next_shift %>
+
+<%= render "week_strip", week_days: @week_days, colors_by_day: @colors_by_day %>
+
 <% if @shifts.empty? %>
-  <p class="text-slate-600">Nenhum plantão cadastrado ainda.</p>
+  <p class="text-body text-on-surface-variant">Nenhum plantão cadastrado ainda.</p>
 <% else %>
   <div class="flex flex-col gap-4">
     <% @shifts.each do |shift| %>
-      <div class="bg-white border border-slate-200 rounded-lg p-4">
+      <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 border-l-4" style="border-left-color: <%= shift.category&.color || "#C7C4D6" %>">
         <div class="flex justify-between items-start">
           <div>
-            <h2 class="font-semibold">
+            <h2 class="text-headline text-on-surface">
               <%= l(shift.date, format: :long) %> · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
             </h2>
             <% if shift.category.present? %>
-              <p class="text-slate-600 mt-1 flex items-center gap-2">
-                <span class="inline-block w-3 h-3 rounded-full shrink-0" style="background-color: <%= shift.category.color %>"></span>
-                <%= shift.category.name %>
-              </p>
+              <p class="text-subheadline text-on-surface-variant mt-1"><%= shift.category.name %></p>
             <% elsif shift.location.present? %>
-              <p class="text-slate-600 mt-1"><%= shift.location %></p>
+              <p class="text-subheadline text-on-surface-variant mt-1"><%= shift.location %></p>
             <% end %>
             <% if shift.notes.present? %>
-              <p class="text-slate-500 text-sm mt-1"><%= shift.notes %></p>
+              <p class="text-footnote text-on-surface-variant mt-1"><%= shift.notes %></p>
             <% end %>
           </div>
-          <div class="flex gap-3 shrink-0">
-            <%= link_to "Editar", edit_shift_path(shift), class: "text-indigo-600 text-sm hover:underline" %>
-            <%= button_to "Remover", shift_path(shift), method: :delete, class: "text-red-600 text-sm hover:underline", form: { data: { turbo_confirm: "Remover este plantão?" } } %>
+          <div class="flex gap-3 shrink-0 items-center">
+            <%= render "shared/link_action", text: "Editar", url: edit_shift_path(shift) %>
+            <%= render "shared/button_danger", text: "Remover", url: shift_path(shift), html: { form: { data: { turbo_confirm: "Remover este plantão?" } } } %>
           </div>
         </div>
       </div>
     <% end %>
   </div>
 <% end %>
+
+<%= turbo_frame_tag "day_modal" %>

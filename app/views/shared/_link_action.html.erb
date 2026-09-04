@@ -1,0 +1,13 @@
+<%
+  variant = local_assigns.fetch(:variant, :primary)
+  link_method = local_assigns.fetch(:method, :get)
+  extra_html = local_assigns.fetch(:html, {})
+  color = variant == :neutral ? "text-on-surface-variant" : "text-primary"
+  base_css = "#{color} text-footnote font-semibold active:opacity-60 transition-opacity"
+  css = [base_css, extra_html[:class]].compact.join(" ")
+%>
+<% if link_method == :get %>
+  <%= link_to text, url, extra_html.except(:class, :form).merge(class: css) %>
+<% else %>
+  <%= button_to text, url, method: link_method, class: "#{css} bg-transparent border-0 p-0 cursor-pointer", form: extra_html.fetch(:form, {}) %>
+<% end %>

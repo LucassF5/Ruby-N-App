@@ -23,7 +23,9 @@ gem "tailwindcss-rails", "~> 4.6"
 gem "turbo-rails"
 gem "importmap-rails"
 
-gem "ruby_native", "~> 0.15.2"
+gem "ruby_native"
 gem "omniauth", "~> 2.1"
 gem "omniauth-apple", "~> 1.2"
 gem "omniauth-rails_csrf_protection", "~> 2.0.1"
+
+gem "herb", "~> 0.10.3"

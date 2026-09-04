@@ -22,7 +22,7 @@ appearance:
 
   # Color shown briefly during launch and as the safe-area fill.
   # Accepts a hex string, or { light:, dark: } for dark mode support.
-  background_color: "#FFFFFF"
+  background_color: "#FAF9FE"
 
   # Light/dark theme. Options:
   #   auto  - follows system setting (default)
@@ -37,7 +37,7 @@ appearance:
   # Brand the navigation bar across the whole app: a centered logo in place of
   # the page title, plus your own bar colors.
   # https://rubynative.com/docs/appearance#navbar-branding
-  # navbar:
+  navbar:
   #   # Centered logo, shown instead of the page title. Set this to an image URL.
   #   # For a local asset, point it at image_url wrapped in ERB so the URL is
   #   # fingerprinted (the app re-downloads only when the image changes). The
@@ -46,15 +46,15 @@ appearance:
   #
   #   # Bar background color.
   #   # Accepts a hex string, or { light:, dark: } for dark mode support.
-  #   background_color: "#3B3F54"
+    background_color: "#FAF9FE"
   #
   #   # Title and bar-button color.
   #   # Accepts a hex string, or { light:, dark: } for dark mode support.
-  #   foreground_color: "#FFFFFF"
+    foreground_color: "#1A1B1F"
   #
   #   # Status bar content, to match your bar. Options: light (white) or dark.
   #   # Omit to let the system decide.
-  #   status_bar: light
+    status_bar: dark
 
   # On Android, the bars are a neutral gray, light or dark to match the theme,
   # with tint_color on the selected tab, matching iOS. Override either bar
@@ -97,13 +97,13 @@ tabs:
     path: /
     icon: house
 
+  - title: Calendário
+    path: /calendar
+    icon: calendar
+
   - title: Profile
     path: /profile
     icon: person
-
-  - title: Settings
-    path: /settings
-    icon: gear
 
   # Per-tab options (add to any tab above):
   #

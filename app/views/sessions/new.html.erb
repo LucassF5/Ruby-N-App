@@ -1,24 +1,21 @@
 <% content_for :title, "Entrar" %>
 
-<h1 class="text-2xl font-semibold mb-4">Entrar</h1>
+<div class="max-w-sm mx-auto mt-8 bg-surface-container-lowest rounded-2xl shadow-sm p-8">
+  <h1 class="text-large-title text-on-surface mb-6">Entrar</h1>
 
-<%= form_with url: session_path, class: "space-y-4 max-w-sm" do |form| %>
-  <div>
-    <%= form.label :email_address, "Email", class: "block text-sm font-medium mb-1" %>
-    <%= form.email_field :email_address, required: true, autofocus: true, class: "w-full border border-slate-300 rounded px-3 py-2" %>
-  </div>
+  <%= form_with url: session_path do |form| %>
+    <div class="bg-surface-container rounded-2xl mb-6 overflow-hidden">
+      <%= render "shared/form_row", form: form, attribute: :email_address, label: "Email", type: :email, options: { required: true, autofocus: true } %>
+      <%= render "shared/form_row", form: form, attribute: :password, label: "Senha", type: :password, options: { required: true, autocomplete: "current-password" }, last: true %>
+    </div>
 
-  <div>
-    <%= form.label :password, "Senha", class: "block text-sm font-medium mb-1" %>
-    <%= form.password_field :password, required: true, autocomplete: "current-password", class: "w-full border border-slate-300 rounded px-3 py-2" %>
-  </div>
+    <%= form.submit "Entrar", class: "w-full bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
+  <% end %>
 
-  <%= form.submit "Entrar", class: "bg-indigo-600 text-white rounded px-4 py-2 font-medium" %>
-<% end %>
+  <%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 w-full bg-on-surface text-surface rounded-full px-5 py-3 text-headline shadow-sm active:opacity-80 active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
 
-<%= button_to "Entrar com Apple", "/auth/apple", data: { turbo: false }, class: "mt-4 bg-black text-white rounded px-4 py-2 font-medium" %>
-
-<p class="mt-4 text-sm">
-  <%= link_to "Criar conta", new_registration_path %> ·
-  <%= link_to "Esqueci minha senha", new_password_path %>
-</p>
+  <p class="mt-4 text-footnote flex gap-2">
+    <%= render "shared/link_action", text: "Criar conta", url: new_registration_path %> ·
+    <%= render "shared/link_action", text: "Esqueci minha senha", url: new_password_path %>
+  </p>
+</div>

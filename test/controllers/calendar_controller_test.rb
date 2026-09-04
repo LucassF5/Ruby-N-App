@@ -10,6 +10,12 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "does not show the redundant 'Ver lista' link now that Home and Calendário are separate tabs" do
+    get calendar_url
+    assert_response :success
+    assert_no_match "Ver lista", response.body
+  end
+
   test "should get calendar for a given month" do
     get calendar_url(month: "2026-12")
     assert_response :success
@@ -68,5 +74,24 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_no_match "Clínica de John", response.body
+  end
+
+  test "removing a shift from the day modal redirects back to that day" do
+    category = categories(:hospital_x)
+    shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
+
+    delete shift_url(shift), params: { return_to: calendar_day_path(date: "2026-09-20") }
+
+    assert_redirected_to calendar_day_path(date: "2026-09-20")
+  end
+
+  test "day modal's Remover button includes return_to so deleting redirects back to the same day" do
+    category = categories(:hospital_x)
+    Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
+
+    get calendar_day_url(date: "2026-09-20")
+
+    assert_response :success
+    assert_match "return_to=%2Fcalendar%2F2026-09-20", response.body
   end
 end

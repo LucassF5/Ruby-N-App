@@ -10,6 +10,15 @@ class Shift < ApplicationRecord
   validate :end_time_after_start_time
   validates :category, inclusion: { in: ->(shift) { shift.user&.categories || [] } }, allow_nil: true
 
+  def self.category_colors_by_date(user, range)
+    user.shifts.where(date: range)
+        .includes(:category)
+        .group_by(&:date)
+        .transform_values do |shifts|
+          shifts.uniq { |s| s.category_id }.map { |s| s.category&.color || "#94a3b8" }
+        end
+  end
+
   private
 
   def apply_category_schedule

@@ -11,6 +11,50 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index uses the danger button partial for removing a shift" do
+    get root_url
+    assert_response :success
+    assert_match "Remover", response.body
+    assert_match "bg-error", response.body
+  end
+
+  test "index highlights the earliest upcoming shift as the next one" do
+    get root_url
+    assert_response :success
+    assert_match "Próximo plantão", response.body
+    assert_match I18n.l(@shift.date, format: :long), response.body
+  end
+
+  test "index hides the next-shift card when there are no upcoming shifts" do
+    Shift.where(date: Date.current..).destroy_all
+
+    get root_url
+
+    assert_response :success
+    assert_no_match "Próximo plantão", response.body
+  end
+
+  test "index shows a 5-day strip starting today with a dot for a scheduled day" do
+    category = categories(:hospital_x)
+    Shift.create!(user: users(:jane), date: Date.current, category: category)
+
+    get root_url
+
+    assert_response :success
+    assert_match category.color, response.body
+    (Date.current..Date.current + 4.days).each do |day|
+      assert_match day.day.to_s, response.body
+    end
+  end
+
+  test "index has a day_modal frame so the 5-day strip's day chips don't blank the page on close" do
+    get root_url
+
+    assert_response :success
+    assert_match '<turbo-frame id="day_modal">', response.body
+    assert_match 'data-turbo-frame="day_modal"', response.body
+  end
+
   test "should get new" do
     get new_shift_url
     assert_response :success
@@ -130,5 +174,54 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_nil @shift.reload.category_id
+  end
+
+  test "creating from the calendar day modal refreshes the day modal, month grid, and Home's next-shift/week-strip widgets" do
+    category = categories(:hospital_x)
+
+    post shifts_url,
+      params: { shift: { date: "2026-09-20", category_id: category.id }, return_to: calendar_day_path(date: "2026-09-20") },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match "turbo-stream action=\"replace\" target=\"day_modal\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"calendar_month\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"next_shift_card\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"week_strip\"", response.body
+    assert_match category.color, response.body
+  end
+
+  test "removing a shift from the calendar day modal refreshes the day modal, month grid, and Home's next-shift/week-strip widgets" do
+    category = categories(:hospital_x)
+    shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
+
+    delete shift_url(shift),
+      params: { return_to: calendar_day_path(date: "2026-09-20") },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_response :success
+    assert_match "turbo-stream action=\"replace\" target=\"day_modal\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"calendar_month\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"next_shift_card\"", response.body
+    assert_match "turbo-stream action=\"replace\" target=\"week_strip\"", response.body
+  end
+
+  test "creating a shift for today from the day modal shows it as the next shift in the refreshed Home widget" do
+    post shifts_url,
+      params: { shift: { date: Date.current.strftime("%Y-%m-%d"), start_time: "09:00", end_time: "17:00" },
+                return_to: calendar_day_path(date: Date.current.strftime("%Y-%m-%d")) },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_response :success
+    assert_match "Próximo plantão", response.body
+  end
+
+  test "creating from a non-calendar context still redirects normally even when turbo-stream is accepted" do
+    post shifts_url,
+      params: { shift: { date: "2026-09-15", start_time: "09:00", end_time: "17:00" } },
+      headers: { "Accept" => "text/vnd.turbo-stream.html, text/html" }
+
+    assert_redirected_to root_url
   end
 end

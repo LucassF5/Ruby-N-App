@@ -1,0 +1,11 @@
+<%
+  button_method = local_assigns.fetch(:method, :delete)
+  extra_html = local_assigns.fetch(:html, {})
+  base_css = "inline-flex items-center justify-center gap-1.5 bg-error text-on-error px-5 py-2.5 rounded-full text-headline shadow-sm active:bg-error-container active:text-on-error-container active:scale-[0.98] transition-all duration-150"
+  css = [base_css, extra_html[:class]].compact.join(" ")
+%>
+<% if button_method == :get %>
+  <%= link_to text, url, extra_html.except(:class, :form).merge(class: css) %>
+<% else %>
+  <%= button_to text, url, method: button_method, class: css, form: extra_html.fetch(:form, {}) %>
+<% end %>
