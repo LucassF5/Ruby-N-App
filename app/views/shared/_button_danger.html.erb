@@ -1,0 +1,11 @@
+<%
+  button_method = local_assigns.fetch(:method, :delete)
+  extra_html = local_assigns.fetch(:html, {})
+  base_css = "inline-block bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-medium"
+  css = [base_css, extra_html[:class]].compact.join(" ")
+%>
+<% if button_method == :get %>
+  <%= link_to text, url, extra_html.except(:class, :form).merge(class: css) %>
+<% else %>
+  <%= button_to text, url, method: button_method, class: css, form: extra_html.fetch(:form, {}) %>
+<% end %>
