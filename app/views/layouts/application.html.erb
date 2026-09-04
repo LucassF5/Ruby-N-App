@@ -20,6 +20,11 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
     <%= stylesheet_link_tag "tailwind" %>
@@ -28,14 +33,18 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-slate-50 text-slate-900">
+  <% chrome = authenticated? && !native_app? %>
+  <body class="bg-surface text-on-surface font-sans antialiased">
 
-    <%= native_tabs_tag %> 
-    
-    <%= render "layouts/navbar" unless native_app? %>
+    <%= native_tabs_tag(enabled: authenticated?) %>
 
-    <main class="px-4 pb-8 native-inset">
-  <%= yield %>
-</main>
+    <%= render "layouts/header" if chrome %>
+
+    <main class="px-4 native-inset <%= chrome ? "pt-20 pb-24" : "pb-8" %>">
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
+
+    <%= render "layouts/navbar" if chrome %>
   </body>
 </html>

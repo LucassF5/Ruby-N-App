@@ -1,7 +1,12 @@
 <% content_for :title, "Editar Categoria" %>
 
-<h1 class="text-2xl font-semibold mb-4">Editar Categoria</h1>
+<%= native_form_tag %>
+<%= native_navbar_tag("Editar Categoria") do |navbar| %>
+  <% navbar.submit_button %>
+<% end %>
+
+<h1 class="text-large-title text-on-surface mb-6 native-hidden">Editar Categoria</h1>
 
 <%= render "form", category: @category %>
 
-<%= link_to "Voltar", categories_path, class: "text-sm text-indigo-600 hover:underline" %>
+<%= render "shared/link_action", text: "Voltar", url: categories_path, html: { class: "native-hidden" } %>

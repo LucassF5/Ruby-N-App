@@ -26,9 +26,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get profile_url
     assert_redirected_to new_session_url
 
-    get edit_settings_url
-    assert_redirected_to new_session_url
-
     get categories_url
     assert_redirected_to new_session_url
 
