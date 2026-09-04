@@ -7,8 +7,8 @@ class CalendarController < ApplicationController
 
   def day
     @date = Date.parse(params[:date])
-    @shifts = Shift.where(date: @date).includes(:category).order(:start_time)
-    @categories = Category.order(:name)
+    @shifts = Current.user.shifts.where(date: @date).includes(:category).order(:start_time)
+    @categories = Current.user.categories.order(:name)
   rescue Date::Error, ArgumentError, TypeError
     redirect_to calendar_path
   end
@@ -28,7 +28,7 @@ class CalendarController < ApplicationController
   end
 
   def colors_by_day(weeks)
-    Shift.where(date: weeks.first.first..weeks.last.last)
+    Current.user.shifts.where(date: weeks.first.first..weeks.last.last)
          .includes(:category)
          .group_by(&:date)
          .transform_values do |shifts|

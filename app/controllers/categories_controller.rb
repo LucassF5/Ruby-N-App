@@ -2,15 +2,15 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: [:edit, :update, :destroy]
 
   def index
-    @categories = Category.order(:name)
+    @categories = Current.user.categories.order(:name)
   end
 
   def new
-    @category = Category.new
+    @category = Current.user.categories.new
   end
 
   def create
-    @category = Category.new(category_params.merge(user: Current.user))
+    @category = Current.user.categories.new(category_params)
 
     if @category.save
       redirect_to categories_path, notice: "Categoria criada."
@@ -38,7 +38,7 @@ class CategoriesController < ApplicationController
   private
 
   def set_category
-    @category = Category.find(params[:id])
+    @category = Current.user.categories.find(params[:id])
   end
 
   def category_params

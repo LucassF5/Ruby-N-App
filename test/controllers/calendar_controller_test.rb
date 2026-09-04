@@ -60,4 +60,13 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match category.color, response.body
   end
+
+  test "does not show another user's shift on the calendar" do
+    Shift.create!(user: users(:john), date: Date.new(2026, 9, 20), start_time: "08:00", end_time: "12:00", location: "Clínica de John")
+
+    get calendar_day_url(date: "2026-09-20")
+
+    assert_response :success
+    assert_no_match "Clínica de John", response.body
+  end
 end
