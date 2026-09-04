@@ -1,5 +1,9 @@
 <% content_for :title, "Meus Plantões" %>
 
+<%= native_navbar_tag("Meus Plantões") do |navbar| %>
+  <% navbar.button icons: { ios: "plus", android: "add" }, href: new_shift_path %>
+<% end %>
+
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-title-2 text-on-surface">Meus Plantões</h1>
   <div class="flex gap-3 items-center">
