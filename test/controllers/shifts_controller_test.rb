@@ -47,6 +47,14 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "index has a day_modal frame so the 5-day strip's day chips don't blank the page on close" do
+    get root_url
+
+    assert_response :success
+    assert_match '<turbo-frame id="day_modal">', response.body
+    assert_match 'data-turbo-frame="day_modal"', response.body
+  end
+
   test "should get new" do
     get new_shift_url
     assert_response :success

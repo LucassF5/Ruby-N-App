@@ -26,7 +26,7 @@
 <div class="flex gap-2 mb-6 overflow-x-auto">
   <% %w[Dom Seg Ter Qua Qui Sex Sáb].values_at(*@week_days.map(&:wday)).zip(@week_days).each do |day_name, day| %>
     <% today = day == Date.current %>
-    <%= link_to calendar_day_path(date: day.strftime("%Y-%m-%d")),
+    <%= link_to calendar_day_path(date: day.strftime("%Y-%m-%d")), data: { turbo_frame: "day_modal" },
           class: "flex flex-col items-center justify-center py-2.5 px-2 rounded-2xl w-14 shrink-0 transition-colors #{today ? "bg-primary text-on-primary" : "bg-surface-container-lowest text-on-surface shadow-sm"}" do %>
       <span class="text-caption-2 uppercase tracking-wider <%= today ? "text-on-primary/70" : "text-on-surface-variant" %>"><%= day_name %></span>
       <span class="text-headline mt-1"><%= day.day %></span>
@@ -68,3 +68,5 @@
     <% end %>
   </div>
 <% end %>
+
+<%= turbo_frame_tag "day_modal" %>
