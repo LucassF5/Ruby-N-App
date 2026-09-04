@@ -18,6 +18,7 @@ class PasswordsController < ApplicationController
 
   def update
     if @user.update(params.permit(:password, :password_confirmation))
+      @user.sessions.destroy_all
       redirect_to new_session_path, notice: "Senha redefinida."
     else
       redirect_to edit_password_path(params[:token]), alert: "Não foi possível redefinir a senha."

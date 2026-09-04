@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :avatar, "Foto de perfil", class: "block text-sm font-medium mb-1" %>
-    <% if @user.avatar.attached? %>
+    <% if @user.avatar.attached? && @user.avatar.attachment.persisted? %>
       <%= image_tag @user.avatar, class: "w-16 h-16 rounded-full object-cover mb-2" %>
     <% end %>
     <%= form.file_field :avatar, accept: "image/*", class: "w-full" %>

@@ -6,13 +6,14 @@ class SettingsController < ApplicationController
   def update
     @user = Current.user
 
-    if password_change_requested? && !@user.authenticate(settings_params[:current_password])
+    if requires_current_password? && !@user.authenticate(settings_params[:current_password])
       @user.errors.add(:current_password, "está incorreta")
       render :edit, status: :unprocessable_entity
       return
     end
 
     if @user.update(update_params)
+      @user.sessions.where.not(id: Current.session.id).destroy_all if password_change_requested?
       redirect_to edit_settings_path, notice: "Configurações atualizadas."
     else
       render :edit, status: :unprocessable_entity
@@ -26,6 +27,14 @@ class SettingsController < ApplicationController
 
     def password_change_requested?
       settings_params[:password].present?
+    end
+
+    def email_change_requested?
+      settings_params[:email_address].present? && settings_params[:email_address] != @user.email_address
+    end
+
+    def requires_current_password?
+      password_change_requested? || email_change_requested?
     end
 
     def update_params

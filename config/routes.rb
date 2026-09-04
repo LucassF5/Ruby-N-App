@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :registrations, only: %i[ new create ]
-  get "/auth/apple/callback", to: "omniauth#apple"
+  match "/auth/apple/callback", to: "omniauth#apple", via: [:get, :post]
   get "/auth/failure", to: "omniauth#failure"
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)

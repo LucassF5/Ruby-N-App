@@ -24,4 +24,12 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
   end
+
+  test "does not create an account with a too-short password" do
+    assert_no_difference("User.count") do
+      post registrations_url, params: { user: { name: "Short", email_address: "short@example.com", password: "a1", password_confirmation: "a1" } }
+    end
+
+    assert_response :unprocessable_entity
+  end
 end

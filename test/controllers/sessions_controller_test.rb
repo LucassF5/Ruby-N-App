@@ -22,5 +22,17 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "redirects unauthenticated visitors to sign in" do
     get root_url
     assert_redirected_to new_session_url
+
+    get profile_url
+    assert_redirected_to new_session_url
+
+    get edit_settings_url
+    assert_redirected_to new_session_url
+
+    get categories_url
+    assert_redirected_to new_session_url
+
+    get calendar_url
+    assert_redirected_to new_session_url
   end
 end

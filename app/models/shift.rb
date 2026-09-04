@@ -8,6 +8,7 @@ class Shift < ApplicationRecord
   validates :start_time, presence: true
   validates :end_time, presence: true
   validate :end_time_after_start_time
+  validates :category, inclusion: { in: ->(shift) { shift.user&.categories || [] } }, allow_nil: true
 
   private
 

@@ -112,4 +112,23 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     post shifts_url, params: { shift: { date: "2026-09-15", start_time: "09:00", end_time: "17:00" } }
     assert_equal users(:jane), Shift.last.user
   end
+
+  test "should not create shift with another user's category" do
+    other_category = Category.create!(user: users(:john), name: "Categoria do John", color: "#000000", start_time: "08:00", end_time: "16:00")
+
+    assert_no_difference("Shift.count") do
+      post shifts_url, params: { shift: { date: "2026-09-24", category_id: other_category.id } }
+    end
+
+    assert_response :unprocessable_entity
+  end
+
+  test "should not update shift with another user's category" do
+    other_category = Category.create!(user: users(:john), name: "Categoria do John 2", color: "#000000", start_time: "08:00", end_time: "16:00")
+
+    patch shift_url(@shift), params: { shift: { category_id: other_category.id } }
+
+    assert_response :unprocessable_entity
+    assert_nil @shift.reload.category_id
+  end
 end

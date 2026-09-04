@@ -14,9 +14,26 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email_address, presence: true, uniqueness: true
   validates :password, confirmation: true, allow_nil: true
+  validates :password, length: { minimum: 8 }, allow_nil: true
+  validate :avatar_is_a_valid_image
+
+  ALLOWED_AVATAR_CONTENT_TYPES = %w[ image/png image/jpeg image/webp ].freeze
+  MAX_AVATAR_SIZE = 5.megabytes
 
   private
     def password_salt
       password_digest
+    end
+
+    def avatar_is_a_valid_image
+      return unless avatar.attached?
+
+      unless avatar.blob.content_type.in?(ALLOWED_AVATAR_CONTENT_TYPES)
+        errors.add(:avatar, "deve ser PNG, JPEG ou WebP")
+      end
+
+      if avatar.blob.byte_size > MAX_AVATAR_SIZE
+        errors.add(:avatar, "deve ter no máximo 5MB")
+      end
     end
 end
