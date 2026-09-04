@@ -1,0 +1,29 @@
+<%= form_with model: shift, class: "bg-white border border-slate-200 rounded-lg p-4 mb-8 flex flex-col gap-3" do |f| %>
+  <% if shift.errors.any? %>
+    <ul class="text-red-600 text-sm">
+      <% shift.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= f.label :date, "Data", class: "text-sm font-medium" %>
+  <%= f.date_field :date, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :start_time, "Horário de início", class: "text-sm font-medium" %>
+  <%= f.time_field :start_time, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :end_time, "Horário de término", class: "text-sm font-medium" %>
+  <%= f.time_field :end_time, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :category_id, "Categoria (opcional)", class: "text-sm font-medium" %>
+  <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "Nenhuma" }, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :location, "Local (opcional)", class: "text-sm font-medium" %>
+  <%= f.text_field :location, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :notes, "Observação (opcional)", class: "text-sm font-medium" %>
+  <%= f.text_area :notes, rows: 3, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.submit "Salvar", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+<% end %>

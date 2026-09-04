@@ -12,8 +12,12 @@ Rails.application.routes.draw do
   get "profile" => "pages#profile"
   get "settings" => "pages#settings"
 
-  resources :plantoes, except: [:show]
+  resources :categories, except: [:show]
+  resources :shifts, except: [:show]
+
+  get "calendar", to: "calendar#show", as: :calendar
+  get "calendar/:date", to: "calendar#day", as: :calendar_day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
 
   # Defines the root path route ("/")
-  root "plantoes#index"
+  root "shifts#index"
 end

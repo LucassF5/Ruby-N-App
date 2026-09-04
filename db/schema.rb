@@ -10,14 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_083849) do
-  create_table "plantoes", force: :cascade do |t|
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_122642) do
+  create_table "categories", force: :cascade do |t|
+    t.string "color", null: false
     t.datetime "created_at", null: false
-    t.date "data", null: false
-    t.time "hora_fim", null: false
-    t.time "hora_inicio", null: false
-    t.string "local"
-    t.text "observacao"
+    t.time "end_time", null: false
+    t.string "name", null: false
+    t.time "start_time", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "shifts", force: :cascade do |t|
+    t.integer "category_id"
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.time "end_time", null: false
+    t.string "location"
+    t.text "notes"
+    t.time "start_time", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_shifts_on_category_id"
+  end
+
+  add_foreign_key "shifts", "categories"
 end

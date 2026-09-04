@@ -1,0 +1,44 @@
+<%= turbo_frame_tag "day_modal" do %>
+  <div class="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg p-4 w-full max-w-sm flex flex-col gap-3">
+      <div class="flex justify-between items-center">
+        <h2 class="font-semibold"><%= @date.strftime("%d/%m/%Y") %></h2>
+        <%= link_to "Fechar", calendar_path(month: @date.strftime("%Y-%m")), class: "text-sm text-slate-500 hover:underline" %>
+      </div>
+
+      <% if @shifts.any? %>
+        <div class="flex flex-col gap-2">
+          <% @shifts.each do |shift| %>
+            <div class="flex justify-between items-center border border-slate-200 rounded px-3 py-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full shrink-0" style="background-color: <%= shift.category&.color || "#94a3b8" %>"></span>
+                <span class="text-sm">
+                  <%= shift.category&.name || shift.location || "Sem categoria" %>
+                  · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
+                </span>
+              </div>
+              <%= button_to "Remover", shift_path(shift), method: :delete, params: { return_to: calendar_day_path(date: @date.strftime("%Y-%m-%d")) }, class: "text-red-600 text-xs hover:underline", form: { data: { turbo_confirm: "Remover este plantão?" } } %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-slate-500 text-sm">Nenhum plantão neste dia.</p>
+      <% end %>
+
+      <% if @categories.empty? %>
+        <p class="text-slate-500 text-sm border-t border-slate-200 pt-3">
+          Cadastre uma categoria antes de adicionar um plantão.
+          <%= link_to "Nova categoria", new_category_path, class: "text-indigo-600 hover:underline" %>
+        </p>
+      <% else %>
+        <%= form_with url: shifts_path, method: :post, class: "flex flex-col gap-2 border-t border-slate-200 pt-3" do %>
+          <%= hidden_field_tag "shift[date]", @date.strftime("%Y-%m-%d") %>
+          <%= hidden_field_tag "return_to", calendar_day_path(date: @date.strftime("%Y-%m-%d")) %>
+          <%= label_tag "shift_category_id", "Categoria", class: "text-sm font-medium" %>
+          <%= collection_select(:shift, :category_id, @categories, :id, :name, {}, class: "border border-slate-300 rounded px-3 py-2") %>
+          <%= submit_tag "Adicionar plantão", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,23 @@
+<%= form_with model: category, class: "bg-white border border-slate-200 rounded-lg p-4 mb-8 flex flex-col gap-3" do |f| %>
+  <% if category.errors.any? %>
+    <ul class="text-red-600 text-sm">
+      <% category.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= f.label :name, "Nome", class: "text-sm font-medium" %>
+  <%= f.text_field :name, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :color, "Cor", class: "text-sm font-medium" %>
+  <%= f.color_field :color, class: "border border-slate-300 rounded h-10 w-20" %>
+
+  <%= f.label :start_time, "Horário de início", class: "text-sm font-medium" %>
+  <%= f.time_field :start_time, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.label :end_time, "Horário de término", class: "text-sm font-medium" %>
+  <%= f.time_field :end_time, class: "border border-slate-300 rounded px-3 py-2" %>
+
+  <%= f.submit "Salvar", class: "self-start bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 cursor-pointer" %>
+<% end %>
