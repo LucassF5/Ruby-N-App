@@ -41,9 +41,9 @@
     <%= render "layouts/header" if chrome %>
 
     <main class="px-4 native-inset <%= chrome ? "pt-20 pb-24" : "pb-8" %>">
-  <%= render "shared/flash" %>
-  <%= yield %>
-</main>
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
 
     <%= render "layouts/navbar" if chrome %>
   </body>

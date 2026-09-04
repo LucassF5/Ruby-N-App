@@ -4,14 +4,6 @@
   <% navbar.button icons: { ios: "plus", android: "add" }, href: new_shift_path %>
 <% end %>
 
-<div class="flex justify-between items-center mb-4">
-  <h1 class="text-title-2 text-on-surface">Meus Plantões</h1>
-  <div class="flex gap-3 items-center">
-    <%= render "shared/link_action", text: "Ver calendário", url: calendar_path %>
-    <%= render "shared/button_primary", text: "Novo plantão", url: new_shift_path %>
-  </div>
-</div>
-
 <% if @shifts.empty? %>
   <p class="text-body text-on-surface-variant">Nenhum plantão cadastrado ainda.</p>
 <% else %>

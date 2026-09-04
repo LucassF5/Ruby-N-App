@@ -11,13 +11,6 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "index uses the primary button partial for the new-shift action" do
-    get root_url
-    assert_response :success
-    assert_match "bg-primary", response.body
-    assert_match "Novo plantão", response.body
-  end
-
   test "index uses the danger button partial for removing a shift" do
     get root_url
     assert_response :success
