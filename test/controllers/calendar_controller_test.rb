@@ -75,4 +75,13 @@ class CalendarControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_no_match "Clínica de John", response.body
   end
+
+  test "removing a shift from the day modal redirects back to that day" do
+    category = categories(:hospital_x)
+    shift = Shift.create!(user: users(:jane), date: Date.new(2026, 9, 20), category: category)
+
+    delete shift_url(shift), params: { return_to: calendar_day_path(date: "2026-09-20") }
+
+    assert_redirected_to calendar_day_path(date: "2026-09-20")
+  end
 end

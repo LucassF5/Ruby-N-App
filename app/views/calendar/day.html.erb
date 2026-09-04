@@ -17,7 +17,7 @@
                   · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
                 </span>
               </div>
-              <%= render "shared/button_danger", text: "Remover", url: shift_path(shift), html: { class: "!px-3 !py-1 !text-xs", form: { data: { turbo_confirm: "Remover este plantão?" } } } %>
+              <%= render "shared/button_danger", text: "Remover", url: shift_path(shift, return_to: calendar_day_path(date: @date.strftime("%Y-%m-%d"))), html: { class: "!px-3 !py-1 !text-xs", form: { data: { turbo_confirm: "Remover este plantão?" } } } %>
             </div>
           <% end %>
         </div>
