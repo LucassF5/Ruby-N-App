@@ -1,0 +1,38 @@
+<% content_for :title, "Editar Perfil" %>
+
+<%= native_form_tag %>
+<%= native_navbar_tag("Editar Perfil") do |navbar| %>
+  <% navbar.submit_button %>
+<% end %>
+
+<h1 class="text-large-title text-on-surface mb-6 native-hidden">Editar Perfil</h1>
+
+<%= form_with model: @user, url: profile_path, method: :patch, multipart: true, class: "space-y-4 max-w-sm" do |form| %>
+  <% if @user.errors.any? %>
+    <ul class="text-error text-footnote">
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= render "shared/field", form: form, attribute: :name, label: "Nome" %>
+  <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email %>
+  <%= render "shared/field", form: form, attribute: :avatar, label: "Foto de perfil", type: :file %>
+
+  <fieldset class="border-t border-outline-variant pt-4 flex flex-col gap-4">
+    <legend class="text-caption-1 text-on-surface-variant mb-2">Trocar senha (opcional)</legend>
+
+    <%= render "shared/field", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
+    <%= render "shared/field", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
+    <%= render "shared/field", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" } %>
+  </fieldset>
+
+  <div class="native-hidden">
+    <%= form.submit "Salvar", class: "bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
+  </div>
+<% end %>
+
+<div class="max-w-sm native-hidden">
+  <%= render "shared/link_action", text: "Voltar", url: profile_path, variant: :neutral %>
+</div>

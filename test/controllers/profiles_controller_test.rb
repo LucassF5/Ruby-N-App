@@ -16,6 +16,11 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_match users(:jane).email_address, response.body
   end
 
+  test "should get edit" do
+    get edit_profile_url
+    assert_response :success
+  end
+
   test "updates name and email" do
     patch profile_url, params: { user: { name: "Jane Updated", email_address: "jane.updated@example.com", current_password: "password" } }
     assert_redirected_to profile_url

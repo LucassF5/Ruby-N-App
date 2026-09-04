@@ -3,12 +3,16 @@ class ProfilesController < ApplicationController
     @user = Current.user
   end
 
+  def edit
+    @user = Current.user
+  end
+
   def update
     @user = Current.user
 
     if requires_current_password? && !@user.authenticate(profile_params[:current_password])
       @user.errors.add(:current_password, "está incorreta")
-      render :show, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
       return
     end
 
@@ -16,7 +20,7 @@ class ProfilesController < ApplicationController
       @user.sessions.where.not(id: Current.session.id).destroy_all if password_change_requested?
       redirect_to profile_path, notice: "Perfil atualizado."
     else
-      render :show, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
