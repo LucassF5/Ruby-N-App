@@ -22,7 +22,7 @@ appearance:
 
   # Color shown briefly during launch and as the safe-area fill.
   # Accepts a hex string, or { light:, dark: } for dark mode support.
-  background_color: "#FFFFFF"
+  background_color: "#FAF9FE"
 
   # Light/dark theme. Options:
   #   auto  - follows system setting (default)
@@ -46,7 +46,7 @@ appearance:
   #
   #   # Bar background color.
   #   # Accepts a hex string, or { light:, dark: } for dark mode support.
-    background_color: "#FFFFFF"
+    background_color: "#FAF9FE"
   #
   #   # Title and bar-button color.
   #   # Accepts a hex string, or { light:, dark: } for dark mode support.
