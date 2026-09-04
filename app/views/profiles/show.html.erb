@@ -1,20 +1,22 @@
 <% content_for :title, "Profile" %>
 
-<h1 class="font-display text-3xl font-bold text-ink mb-6">Profile</h1>
+<h1 class="text-large-title text-on-surface mb-6">Profile</h1>
 
-<div class="bg-surface rounded-2xl shadow-md p-5 mb-6 flex items-center gap-4">
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-5 mb-6 flex items-center gap-4">
   <% if @user.avatar.attached? && @user.avatar.attachment.persisted? %>
-    <%= image_tag @user.avatar, class: "w-16 h-16 rounded-full object-cover shadow-sm" %>
+    <%= image_tag @user.avatar, class: "w-16 h-16 rounded-full object-cover" %>
+  <% else %>
+    <span class="material-symbols-outlined text-outline-variant text-[48px]">account_circle</span>
   <% end %>
   <div>
-    <p class="text-ink font-semibold"><%= @user.name %></p>
-    <p class="text-slate-600"><%= @user.email_address %></p>
+    <p class="text-headline text-on-surface"><%= @user.name %></p>
+    <p class="text-subheadline text-on-surface-variant"><%= @user.email_address %></p>
   </div>
 </div>
 
 <%= form_with model: @user, url: profile_path, method: :patch, multipart: true, class: "space-y-4 max-w-sm" do |form| %>
   <% if @user.errors.any? %>
-    <ul class="text-danger text-sm">
+    <ul class="text-error text-footnote">
       <% @user.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
@@ -25,13 +27,17 @@
   <%= render "shared/field", form: form, attribute: :email_address, label: "Email", type: :email %>
   <%= render "shared/field", form: form, attribute: :avatar, label: "Foto de perfil", type: :file %>
 
-  <fieldset class="border-t border-slate-200 pt-4 flex flex-col gap-4">
-    <legend class="text-sm font-medium mb-2">Trocar senha (opcional)</legend>
+  <fieldset class="border-t border-outline-variant pt-4 flex flex-col gap-4">
+    <legend class="text-caption-1 text-on-surface-variant mb-2">Trocar senha (opcional)</legend>
 
     <%= render "shared/field", form: form, attribute: :current_password, label: "Senha atual", type: :password, options: { autocomplete: "current-password" } %>
     <%= render "shared/field", form: form, attribute: :password, label: "Nova senha", type: :password, options: { autocomplete: "new-password" } %>
     <%= render "shared/field", form: form, attribute: :password_confirmation, label: "Confirmar nova senha", type: :password, options: { autocomplete: "new-password" } %>
   </fieldset>
 
-  <%= form.submit "Salvar", class: "bg-gradient-to-b from-primary-light to-primary-deep text-white rounded-xl px-5 py-2.5 font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 active:shadow-none transition-all duration-150 cursor-pointer" %>
+  <%= form.submit "Salvar", class: "bg-primary text-on-primary rounded-full px-5 py-3 text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
 <% end %>
+
+<div class="mt-6 max-w-sm">
+  <%= render "shared/link_action", text: "Sair", url: session_path, method: :delete, variant: :neutral %>
+</div>

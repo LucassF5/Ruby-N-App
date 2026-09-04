@@ -1,29 +1,29 @@
-<%= form_with model: shift, class: "bg-surface rounded-2xl shadow-md p-5 mb-8 flex flex-col gap-3" do |f| %>
+<%= form_with model: shift, class: "bg-surface-container-lowest rounded-2xl shadow-sm p-5 mb-8 flex flex-col gap-3" do |f| %>
   <% if shift.errors.any? %>
-    <ul class="text-danger text-sm">
+    <ul class="text-error text-footnote">
       <% shift.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
   <% end %>
 
-  <%= f.label :date, "Data", class: "text-sm font-medium text-ink" %>
-  <%= f.date_field :date, class: "border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <%= f.label :date, "Data", class: "text-caption-1 text-on-surface-variant" %>
+  <%= f.date_field :date, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
 
-  <%= f.label :start_time, "Horário de início", class: "text-sm font-medium text-ink" %>
-  <%= f.time_field :start_time, class: "border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <%= f.label :start_time, "Horário de início", class: "text-caption-1 text-on-surface-variant" %>
+  <%= f.time_field :start_time, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
 
-  <%= f.label :end_time, "Horário de término", class: "text-sm font-medium text-ink" %>
-  <%= f.time_field :end_time, class: "border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <%= f.label :end_time, "Horário de término", class: "text-caption-1 text-on-surface-variant" %>
+  <%= f.time_field :end_time, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
 
-  <%= f.label :category_id, "Categoria (opcional)", class: "text-sm font-medium text-ink" %>
-  <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "Nenhuma" }, class: "border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <%= f.label :category_id, "Categoria (opcional)", class: "text-caption-1 text-on-surface-variant" %>
+  <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "Nenhuma" }, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
 
-  <%= f.label :location, "Local (opcional)", class: "text-sm font-medium text-ink" %>
-  <%= f.text_field :location, class: "border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <%= f.label :location, "Local (opcional)", class: "text-caption-1 text-on-surface-variant" %>
+  <%= f.text_field :location, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
 
-  <%= f.label :notes, "Observação (opcional)", class: "text-sm font-medium text-ink" %>
-  <%= f.text_area :notes, rows: 3, class: "border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
+  <%= f.label :notes, "Observação (opcional)", class: "text-caption-1 text-on-surface-variant" %>
+  <%= f.text_area :notes, rows: 3, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150" %>
 
-  <%= f.submit "Salvar", class: "self-start bg-gradient-to-b from-primary-light to-primary-deep text-white px-5 py-2.5 rounded-xl font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:scale-95 active:shadow-none transition-all duration-150 cursor-pointer" %>
+  <%= f.submit "Salvar", class: "self-start bg-primary text-on-primary px-5 py-3 rounded-full text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
 <% end %>

@@ -2,15 +2,62 @@
 
 @theme {
   --color-primary: #007AFF;
-  --color-primary-light: #2E9BFF;
-  --color-primary-deep: #0060E6;
-  --color-ink: #12151C;
-  --color-surface: #FFFFFF;
-  --color-bg: #F5F6F8;
-  --color-danger: #E5484D;
-  --color-danger-light: #F76166;
-  --color-danger-deep: #C81E24;
-  --color-danger-tint: #FCEBEC;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #D6EAFF;
+  --color-on-primary-container: #00366B;
+
+  --color-error: #BA1A1A;
+  --color-on-error: #FFFFFF;
+  --color-error-container: #FFDAD6;
+  --color-on-error-container: #93000A;
+
+  --color-surface: #FAF9FE;
+  --color-on-surface: #1A1B1F;
+  --color-on-surface-variant: #464554;
+
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F4F3F8;
+  --color-surface-container: #EEEDF3;
+  --color-surface-container-high: #E9E7ED;
+  --color-surface-container-highest: #E3E2E7;
+
+  --color-outline: #777585;
+  --color-outline-variant: #C7C4D6;
+
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  .text-large-title { font-family: var(--font-display); font-size: 34px; line-height: 41px; letter-spacing: 0.37px; font-weight: 700; }
+  .text-title-1 { font-family: var(--font-display); font-size: 28px; line-height: 34px; letter-spacing: 0.36px; font-weight: 700; }
+  .text-title-2 { font-family: var(--font-display); font-size: 22px; line-height: 28px; letter-spacing: -0.26px; font-weight: 600; }
+  .text-title-3 { font-family: var(--font-display); font-size: 20px; line-height: 25px; letter-spacing: -0.45px; font-weight: 600; }
+  .text-headline { font-family: var(--font-display); font-size: 17px; line-height: 22px; letter-spacing: -0.43px; font-weight: 600; }
+  .text-body { font-family: var(--font-sans); font-size: 17px; line-height: 22px; letter-spacing: -0.43px; font-weight: 400; }
+  .text-callout { font-family: var(--font-sans); font-size: 16px; line-height: 21px; letter-spacing: -0.32px; font-weight: 400; }
+  .text-subheadline { font-family: var(--font-sans); font-size: 15px; line-height: 20px; letter-spacing: -0.24px; font-weight: 400; }
+  .text-footnote { font-family: var(--font-sans); font-size: 13px; line-height: 18px; letter-spacing: -0.08px; font-weight: 400; }
+  .text-caption-1 { font-family: var(--font-sans); font-size: 12px; line-height: 16px; letter-spacing: 0; font-weight: 500; }
+  .text-caption-2 { font-family: var(--font-sans); font-size: 11px; line-height: 13px; letter-spacing: 0.07px; font-weight: 600; }
 }

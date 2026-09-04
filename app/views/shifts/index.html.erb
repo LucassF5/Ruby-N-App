@@ -1,7 +1,7 @@
 <% content_for :title, "Meus Plantões" %>
 
 <div class="flex justify-between items-center mb-4">
-  <h1 class="font-display text-2xl font-bold text-ink">Meus Plantões</h1>
+  <h1 class="text-title-2 text-on-surface">Meus Plantões</h1>
   <div class="flex gap-3 items-center">
     <%= render "shared/link_action", text: "Ver calendário", url: calendar_path %>
     <%= render "shared/button_primary", text: "Novo plantão", url: new_shift_path %>
@@ -9,23 +9,23 @@
 </div>
 
 <% if @shifts.empty? %>
-  <p class="text-slate-600">Nenhum plantão cadastrado ainda.</p>
+  <p class="text-body text-on-surface-variant">Nenhum plantão cadastrado ainda.</p>
 <% else %>
   <div class="flex flex-col gap-4">
     <% @shifts.each do |shift| %>
-      <div class="bg-surface rounded-xl shadow-sm hover:shadow-md transition-shadow duration-150 p-4 border-l-4" style="border-left-color: <%= shift.category&.color || "#CBD5E1" %>">
+      <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 border-l-4" style="border-left-color: <%= shift.category&.color || "#C7C4D6" %>">
         <div class="flex justify-between items-start">
           <div>
-            <h2 class="font-semibold text-ink">
+            <h2 class="text-headline text-on-surface">
               <%= l(shift.date, format: :long) %> · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
             </h2>
             <% if shift.category.present? %>
-              <p class="text-slate-600 mt-1"><%= shift.category.name %></p>
+              <p class="text-subheadline text-on-surface-variant mt-1"><%= shift.category.name %></p>
             <% elsif shift.location.present? %>
-              <p class="text-slate-600 mt-1"><%= shift.location %></p>
+              <p class="text-subheadline text-on-surface-variant mt-1"><%= shift.location %></p>
             <% end %>
             <% if shift.notes.present? %>
-              <p class="text-slate-500 text-sm mt-1"><%= shift.notes %></p>
+              <p class="text-footnote text-on-surface-variant mt-1"><%= shift.notes %></p>
             <% end %>
           </div>
           <div class="flex gap-3 shrink-0 items-center">

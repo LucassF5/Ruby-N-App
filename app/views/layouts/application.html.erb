@@ -23,6 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
@@ -32,15 +33,18 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-bg text-ink font-sans">
+  <% chrome = authenticated? && !native_app? %>
+  <body class="bg-surface text-on-surface font-sans antialiased">
 
     <%= native_tabs_tag(enabled: authenticated?) %>
 
-    <%= render "layouts/navbar" if authenticated? && !native_app? %>
+    <%= render "layouts/header" if chrome %>
 
-    <main class="px-4 pb-8 native-inset">
+    <main class="px-4 native-inset <%= chrome ? "pt-20 pb-24" : "pb-8" %>">
   <%= render "shared/flash" %>
   <%= yield %>
 </main>
+
+    <%= render "layouts/navbar" if chrome %>
   </body>
 </html>
