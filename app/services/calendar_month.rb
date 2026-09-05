@@ -2,9 +2,25 @@ class CalendarMonth
   attr_reader :month, :weeks, :colors_by_day
 
   def initialize(user, month: nil, date: nil)
+    @user = user
     @month = resolve_month(month, date)
     @weeks = compute_weeks(@month)
-    @colors_by_day = compute_colors_by_day(user, @weeks)
+    @colors_by_day = compute_colors_by_day(@user, @weeks)
+    @shifts = compute_shifts(@user, @month)
+  end
+
+  def shifts_count
+    @shifts.size
+  end
+
+  def total_hours
+    @shifts.sum { |shift| (shift.end_time - shift.start_time) / 1.hour }
+  end
+
+  def category_breakdown
+    @shifts.group_by(&:category)
+           .map { |category, shifts| { name: category&.name || "Sem categoria", color: category&.color || "#94a3b8", count: shifts.size } }
+           .sort_by { |entry| -entry[:count] }
   end
 
   private
@@ -28,5 +44,9 @@ class CalendarMonth
 
     def compute_colors_by_day(user, weeks)
       Shift.category_colors_by_date(user, weeks.first.first..weeks.last.last)
+    end
+
+    def compute_shifts(user, month)
+      user.shifts.where(date: month.beginning_of_month..month.end_of_month).includes(:category)
     end
 end

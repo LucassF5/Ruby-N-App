@@ -1,4 +1,11 @@
 <%= turbo_frame_tag "calendar_month" do %>
+  <%= native_navbar_tag(@month.strftime("%B %Y").capitalize) %>
+
+  <div class="flex justify-between items-center mb-4 native-hidden">
+    <h1 class="text-title-2 text-on-surface"><%= @month.strftime("%B %Y") %></h1>
+    <%= render "shared/link_action", text: "Gerenciar categorias", url: categories_path %>
+  </div>
+
   <section class="bg-surface-container-lowest rounded-2xl shadow-sm p-4">
     <div class="flex items-center justify-between mb-4">
       <%= render "shared/link_action", text: "‹ Mês anterior", url: calendar_path(month: (@month - 1.month).strftime("%Y-%m")) %>
