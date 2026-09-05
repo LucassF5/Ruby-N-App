@@ -11,16 +11,44 @@
     </div>
   <% end %>
 
-  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Quando</p>
+  <div class="flex items-center gap-1.5 px-1 mb-2">
+    <span class="material-symbols-outlined text-outline text-[16px]">schedule</span>
+    <p class="text-caption-2 uppercase text-outline tracking-wider">Quando</p>
+  </div>
   <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-6 overflow-hidden">
     <%= render "shared/form_row", form: f, attribute: :date, label: "Data", type: :date %>
     <%= render "shared/form_row", form: f, attribute: :start_time, label: "Horário de início", type: :time %>
     <%= render "shared/form_row", form: f, attribute: :end_time, label: "Horário de término", type: :time, last: true %>
   </div>
 
-  <p class="text-caption-2 uppercase text-outline px-1 mb-2 tracking-wider">Detalhes</p>
+  <div class="flex items-center gap-1.5 px-1 mb-2">
+    <span class="material-symbols-outlined text-outline text-[16px]">local_offer</span>
+    <p class="text-caption-2 uppercase text-outline tracking-wider">Detalhes</p>
+  </div>
   <div class="bg-surface-container-lowest rounded-2xl shadow-sm mb-8 overflow-hidden">
-    <%= render "shared/form_row", form: f, attribute: :category_id, label: "Categoria (opcional)", type: :select, collection: @categories, include_blank: "Nenhuma" %>
+    <div class="px-4 py-3.5 border-b border-outline-variant/60">
+      <p class="text-caption-2 text-on-surface-variant mb-2.5">Categoria (opcional)</p>
+      <% if @categories.present? %>
+        <div class="flex flex-wrap gap-2">
+          <label>
+            <%= f.radio_button :category_id, "", class: "sr-only", checked: shift.category_id.blank? %>
+            <span class="category-chip text-caption-1"><span class="dot"></span>Nenhuma</span>
+          </label>
+          <% @categories.each do |category| %>
+            <label>
+              <%= f.radio_button :category_id, category.id, class: "sr-only" %>
+              <span class="category-chip text-caption-1" style="--chip-color: <%= category.color %>">
+                <span class="dot"></span><%= category.name %>
+              </span>
+            </label>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-footnote text-on-surface-variant">
+          Nenhuma categoria ainda. <%= link_to "Criar categoria", new_category_path, class: "text-primary font-semibold" %>
+        </p>
+      <% end %>
+    </div>
     <%= render "shared/form_row", form: f, attribute: :location, label: "Local (opcional)" %>
     <%= render "shared/form_row", form: f, attribute: :notes, label: "Observação (opcional)", type: :textarea, last: true %>
   </div>

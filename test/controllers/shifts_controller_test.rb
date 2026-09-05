@@ -11,18 +11,18 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "index uses the danger button partial for removing a shift" do
+  test "index renders a destructive remove action for a shift" do
     get root_url
     assert_response :success
     assert_match "Remover", response.body
-    assert_match "bg-error", response.body
+    assert_match "!text-error", response.body
   end
 
   test "index highlights the earliest upcoming shift as the next one" do
     get root_url
     assert_response :success
     assert_match "Próximo plantão", response.body
-    assert_match I18n.l(@shift.date, format: :long), response.body
+    assert_match ApplicationController.helpers.pt_full_date(@shift.date), response.body
   end
 
   test "index hides the next-shift card when there are no upcoming shifts" do
