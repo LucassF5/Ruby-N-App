@@ -1,6 +1,8 @@
 class ProfilesController < ApplicationController
   def show
     @user = Current.user
+    @shifts_count = @user.shifts.count
+    @categories_count = @user.categories.count
   end
 
   def edit
