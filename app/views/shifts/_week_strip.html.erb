@@ -1,4 +1,4 @@
-<div id="week_strip" class="flex gap-2 mb-6 overflow-x-auto">
+<div id="week_strip" class="flex gap-2 mb-6 justify-center overflow-x-auto">
   <% %w[Dom Seg Ter Qua Qui Sex Sáb].values_at(*week_days.map(&:wday)).zip(week_days).each do |day_name, day| %>
     <% today = day == Date.current %>
     <%= link_to calendar_day_path(date: day.strftime("%Y-%m-%d")), data: { turbo_frame: "day_modal" },
