@@ -7,7 +7,8 @@ app:
   # Navigation mode. Options:
   #   normal   - no screen transitions (default)
   #   advanced - Hotwire Native navigator with native transitions
-  mode: normal
+  # mode: normal
+  mode: advanced
 
   # First URL shown when the app launches.
   # Default: the first tab's path.
@@ -28,7 +29,7 @@ appearance:
   #   auto  - follows system setting (default)
   #   light - force light mode
   #   dark  - force dark mode
-  # theme: auto
+  theme: light
 
   # Enable device rotation.
   # Default: false (portrait-only).
@@ -46,7 +47,7 @@ appearance:
   #
   #   # Bar background color.
   #   # Accepts a hex string, or { light:, dark: } for dark mode support.
-    background_color: "#FAF9FE"
+    background_color: light
   #
   #   # Title and bar-button color.
   #   # Accepts a hex string, or { light:, dark: } for dark mode support.
@@ -100,6 +101,13 @@ tabs:
   - title: Calendário
     path: /calendar
     icon: calendar
+    eager: true
+
+  - title: Categorias
+    path: /categories
+    icons:
+      ios: tag
+      android: sell
 
   - title: Profile
     path: /profile

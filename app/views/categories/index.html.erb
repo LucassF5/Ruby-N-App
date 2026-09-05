@@ -1,8 +1,8 @@
 <% content_for :title, "Categorias" %>
 
-<%= native_navbar_tag("Categorias") do |navbar| %>
-  <% navbar.button icons: { ios: "plus", android: "add" }, href: new_category_path %>
-<% end %>
+<%= native_navbar_tag("Categorias")%>
+
+<%= native_fab_tag(icons: { ios: "plus", android: "add" }, href: new_category_path) %>
 
 <% if @categories.empty? %>
   <p class="text-body text-on-surface-variant">Nenhuma categoria cadastrada ainda.</p>
@@ -17,15 +17,27 @@
             <p class="text-footnote text-on-surface-variant"><%= category.start_time.strftime("%H:%M") %>–<%= category.end_time.strftime("%H:%M") %></p>
           </div>
         </div>
-        <div class="flex gap-3 shrink-0 items-center">
-          <%= render "shared/link_action", text: "Editar", url: edit_category_path(category) %>
-          <%= render "shared/button_danger", text: "Remover", url: category_path(category), html: { form: { data: { turbo_confirm: "Remover esta categoria?" } } } %>
-        </div>
+        <% if native_app? %>
+          <span id="<%= dom_id(category, :menu) %>" aria-hidden="true" class="text-title-1 text-on-surface-variant px-2">&#8942;</span>
+
+          <%= native_menu_tag anchor: "##{dom_id(category, :menu)}" do |menu| %>
+            <% menu.item "Editar", href: edit_category_path(category), icons: { ios: "pencil", android: "edit" } %>
+            <% menu.item "Remover", click: "##{dom_id(category, :delete)}", icons: { ios: "trash", android: "delete" }, destructive: true %>
+          <% end %>
+
+          <%= button_to "Remover", category_path(category), method: :delete,
+                id: dom_id(category, :delete), form: { hidden: true, data: { turbo_confirm: "Remover esta categoria?" } } %>
+        <% else %>
+          <div class="flex gap-3 shrink-0 items-center">
+            <%= render "shared/link_action", text: "Editar", url: edit_category_path(category) %>
+            <%= render "shared/button_danger", text: "Remover", url: category_path(category), html: { form: { data: { turbo_confirm: "Remover esta categoria?" } } } %>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
 <% end %>
 
-<div class="mt-4">
+<div class="mt-4 native-hidden">
   <%= render "shared/link_action", text: "Voltar ao calendário", url: calendar_path %>
 </div>

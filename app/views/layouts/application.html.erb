@@ -40,8 +40,14 @@
 
     <%= render "layouts/header" if chrome %>
 
-    <main class="px-4 native-inset <%= chrome ? "pt-20 pb-24" : "pb-8" %>">
-      <%= render "shared/flash" %>
+    <main class="px-4 native-inset <%= chrome ? "pt-20 pb-24" : "" %>">
+    <% if native_app? %>
+        <%= native_toast_tag flash[:notice] %>
+        <%= render "shared/flash", flash: { alert: flash[:alert] } %>
+      <% else %>
+        <%= render "shared/flash" %>
+      <% end %>
+
       <%= yield %>
     </main>
 
