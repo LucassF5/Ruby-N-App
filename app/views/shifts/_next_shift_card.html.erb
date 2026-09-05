@@ -1,12 +1,27 @@
 <div id="next_shift_card">
   <% if next_shift %>
-    <div class="bg-primary text-on-primary rounded-2xl shadow-sm p-5 mb-6">
-      <p class="text-caption-1 text-on-primary/70">Próximo plantão</p>
-      <p class="text-title-2 mt-1"><%= pt_full_date(next_shift.date) %></p>
-      <p class="text-callout text-on-primary/90 mt-0.5">
+    <div class="bg-primary text-on-primary rounded-2xl shadow-sm p-6 mb-6">
+      <div class="flex items-center justify-between">
+        <p class="text-caption-1 text-on-primary/70">Próximo plantão</p>
+        <span class="text-caption-1 font-semibold bg-white/15 px-2.5 py-1 rounded-full"><%= relative_day_label(next_shift.date) %></span>
+      </div>
+
+      <p class="text-large-title mt-3 tabular-nums">
         <%= next_shift.start_time.strftime("%H:%M") %>–<%= next_shift.end_time.strftime("%H:%M") %>
-        <% if next_shift.category.present? %> · <%= next_shift.category.name %><% end %>
       </p>
+      <p class="text-callout text-on-primary/80 mt-1"><%= weekday_full(next_shift.date) %>, <%= pt_full_date(next_shift.date) %></p>
+
+      <% if next_shift.category.present? || next_shift.location.present? %>
+        <div class="flex items-center gap-2 mt-4 pt-4 border-t border-white/15">
+          <% if next_shift.category.present? %>
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <%= next_shift.category.color %>"></span>
+            <span class="text-subheadline font-medium"><%= next_shift.category.name %></span>
+          <% else %>
+            <span class="material-symbols-outlined !text-[18px] text-on-primary/70">location_on</span>
+            <span class="text-subheadline font-medium"><%= next_shift.location %></span>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>
