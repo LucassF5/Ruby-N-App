@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: bin/rails test
+
+      - name: Check Ruby Native signals
+        run: bundle exec ruby_native check
+
+      # - name: Check against the deployed build
+      #   if: github.ref == 'refs/heads/main'
+      #   run: bundle exec ruby_native check --deployed
+      #   env:
+      #     RUBY_NATIVE_TOKEN: ${{ secrets.RUBY_NATIVE_TOKEN }}
+
+      # - name: Deploy to Ruby Native
+      #   if: github.ref == 'refs/heads/main'
+      #   run: bundle exec ruby_native deploy --if-needed
+      #   env:
+      #     RUBY_NATIVE_TOKEN: ${{ secrets.RUBY_NATIVE_TOKEN }}
