@@ -1,0 +1,6 @@
+shared:
+  apple:
+    key_id: <%= Rails.application.credentials.dig(:apns, :key_id) %>
+    team_id: <%= Rails.application.credentials.dig(:apns, :team_id) %>
+    topic: <%= Rails.application.credentials.dig(:apns, :bundle_id) %>
+    encryption_key: <%= Rails.application.credentials.dig(:apns, :encryption_key)&.dump %>
