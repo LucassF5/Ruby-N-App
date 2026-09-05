@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "day_modal" do %>
   <div class="fixed inset-0 bg-on-surface/40 flex items-center justify-center p-4 z-50">
-    <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 w-full max-w-sm flex flex-col gap-3">
+    <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-5 w-full max-w-sm flex flex-col gap-4">
       <div class="flex justify-between items-center">
         <h2 class="text-headline text-on-surface"><%= @date.strftime("%d/%m/%Y") %></h2>
         <%= render "shared/link_action", text: "Fechar", url: calendar_path(month: @date.strftime("%Y-%m")), variant: :neutral %>
@@ -9,15 +9,19 @@
       <% if @shifts.any? %>
         <div class="flex flex-col gap-2">
           <% @shifts.each do |shift| %>
-            <div class="flex justify-between items-center bg-surface-container-low rounded-xl px-3 py-2.5">
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full shrink-0" style="background-color: <%= shift.category&.color || "#C7C4D6" %>"></span>
-                <span class="text-footnote text-on-surface">
+            <div class="flex items-center justify-between gap-2 bg-surface-container-low rounded-xl pl-3 pr-1.5 py-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <%= shift.category&.color || "#C7C4D6" %>"></span>
+                <span class="text-footnote text-on-surface truncate">
                   <%= shift.category&.name || shift.location || "Sem categoria" %>
                   · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
                 </span>
               </div>
-              <%= render "shared/button_danger", text: "Remover", url: shift_path(shift, return_to: calendar_day_path(date: @date.strftime("%Y-%m-%d"))), html: { class: "!px-3 !py-1 !text-caption-1", form: { data: { turbo_confirm: "Remover este plantão?" } } } %>
+              <%= button_to shift_path(shift, return_to: calendar_day_path(date: @date.strftime("%Y-%m-%d"))), method: :delete,
+                    class: "flex items-center justify-center w-8 h-8 rounded-full text-on-surface-variant active:bg-error-container active:text-on-error-container transition-colors shrink-0 cursor-pointer",
+                    form: { data: { turbo_confirm: "Remover este plantão?" } } do %>
+                <span class="material-symbols-outlined !text-[18px]">delete</span>
+              <% end %>
             </div>
           <% end %>
         </div>
@@ -26,17 +30,26 @@
       <% end %>
 
       <% if @categories.empty? %>
-        <p class="text-subheadline text-on-surface-variant border-t border-outline-variant pt-3">
+        <p class="text-subheadline text-on-surface-variant border-t border-outline-variant pt-4">
           Cadastre uma categoria antes de adicionar um plantão.
           <%= render "shared/link_action", text: "Nova categoria", url: new_category_path %>
         </p>
       <% else %>
-        <%= form_with url: shifts_path, method: :post, class: "flex flex-col gap-2 border-t border-outline-variant pt-3" do %>
+        <%= form_with url: shifts_path, method: :post, class: "flex flex-col gap-2.5 border-t border-outline-variant pt-4" do %>
           <%= hidden_field_tag "shift[date]", @date.strftime("%Y-%m-%d") %>
           <%= hidden_field_tag "return_to", calendar_day_path(date: @date.strftime("%Y-%m-%d")) %>
-          <%= label_tag "shift_category_id", "Categoria", class: "text-caption-1 text-on-surface-variant" %>
-          <%= collection_select(:shift, :category_id, @categories, :id, :name, {}, class: "bg-surface-container-lowest border border-outline-variant rounded-xl px-3.5 py-3 text-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors duration-150") %>
-          <%= submit_tag "Adicionar plantão", class: "self-start bg-primary text-on-primary px-5 py-3 rounded-full text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
+          <p class="text-caption-1 text-on-surface-variant">Categoria</p>
+          <div class="flex flex-wrap gap-2">
+            <% @categories.each_with_index do |category, index| %>
+              <label>
+                <%= radio_button_tag "shift[category_id]", category.id, index.zero?, class: "sr-only" %>
+                <span class="category-chip text-caption-1" style="--chip-color: <%= category.color %>">
+                  <span class="dot"></span><%= category.name %>
+                </span>
+              </label>
+            <% end %>
+          </div>
+          <%= submit_tag "Adicionar plantão", class: "self-start mt-1 bg-primary text-on-primary px-5 py-3 rounded-full text-headline shadow-sm active:bg-primary-container active:scale-[0.98] transition-all duration-150 cursor-pointer" %>
         <% end %>
       <% end %>
     </div>
