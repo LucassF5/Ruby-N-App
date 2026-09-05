@@ -4,14 +4,6 @@
   <% navbar.button icons: { ios: "plus", android: "add" }, href: new_shift_path %>
 <% end %>
 
-<div class="flex justify-between items-center mb-4">
-  <h1 class="text-title-2 text-on-surface">Meus Plantões</h1>
-  <div class="flex gap-3 items-center">
-    <%= render "shared/link_action", text: "Ver calendário", url: calendar_path %>
-    <%= render "shared/button_primary", text: "Novo plantão", url: new_shift_path %>
-  </div>
-</div>
-
 <%= render "next_shift_card", next_shift: @next_shift %>
 
 <%= render "week_strip", week_days: @week_days, colors_by_day: @colors_by_day %>
@@ -19,26 +11,58 @@
 <% if @shifts.empty? %>
   <p class="text-body text-on-surface-variant">Nenhum plantão cadastrado ainda.</p>
 <% else %>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-3">
     <% @shifts.each do |shift| %>
-      <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4 border-l-4" style="border-left-color: <%= shift.category&.color || "#C7C4D6" %>">
-        <div class="flex justify-between items-start">
-          <div>
-            <h2 class="text-headline text-on-surface">
-              <%= l(shift.date, format: :long) %> · <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
-            </h2>
-            <% if shift.category.present? %>
-              <p class="text-subheadline text-on-surface-variant mt-1"><%= shift.category.name %></p>
-            <% elsif shift.location.present? %>
-              <p class="text-subheadline text-on-surface-variant mt-1"><%= shift.location %></p>
-            <% end %>
-            <% if shift.notes.present? %>
-              <p class="text-footnote text-on-surface-variant mt-1"><%= shift.notes %></p>
-            <% end %>
+      <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-4">
+        <div class="flex gap-3">
+          <div class="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-surface-container-low shrink-0">
+            <span class="text-caption-2 uppercase tracking-wider text-on-surface-variant"><%= weekday_abbr(shift.date) %></span>
+            <span class="text-title-3 text-on-surface"><%= shift.date.day %></span>
           </div>
-          <div class="flex gap-3 shrink-0 items-center">
-            <%= render "shared/link_action", text: "Editar", url: edit_shift_path(shift) %>
-            <%= render "shared/button_danger", text: "Remover", url: shift_path(shift), html: { form: { data: { turbo_confirm: "Remover este plantão?" } } } %>
+
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <p class="text-headline text-on-surface tabular-nums">
+                  <%= shift.start_time.strftime("%H:%M") %>–<%= shift.end_time.strftime("%H:%M") %>
+                </p>
+                <p class="text-footnote text-on-surface-variant mt-0.5"><%= pt_full_date(shift.date) %></p>
+              </div>
+
+              <% if native_app? %>
+                <span id="<%= dom_id(shift, :menu) %>" aria-hidden="true"
+                      class="material-symbols-outlined !text-[20px] text-on-surface-variant w-8 h-8 flex items-center justify-center rounded-full shrink-0 -mr-1 -mt-0.5">more_vert</span>
+                <%= native_menu_tag anchor: "##{dom_id(shift, :menu)}" do |menu| %>
+                  <% menu.item "Editar", href: edit_shift_path(shift), icons: { ios: "pencil", android: "edit" } %>
+                  <% menu.item "Remover", click: "##{dom_id(shift, :delete)}", icons: { ios: "trash", android: "delete" }, destructive: true %>
+                <% end %>
+                <%= button_to "Remover", shift_path(shift), method: :delete,
+                      id: dom_id(shift, :delete), form: { hidden: true, data: { turbo_confirm: "Remover esta categoria?" } } %>
+              <% end %>
+            </div>
+
+            <% if shift.category.present? || shift.location.present? %>
+              <div class="flex items-center gap-1.5 mt-2">
+                <% if shift.category.present? %>
+                  <span class="w-2 h-2 rounded-full shrink-0" style="background-color: <%= shift.category.color || "#C7C4D6" %>"></span>
+                  <span class="text-caption-1 text-on-surface-variant font-medium"><%= shift.category.name %></span>
+                <% else %>
+                  <span class="text-caption-1 text-on-surface-variant font-medium"><%= shift.location %></span>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if shift.notes.present? %>
+              <p class="text-footnote text-on-surface-variant/80 mt-2 pl-2.5 border-l-2 border-outline-variant"><%= shift.notes %></p>
+            <% end %>
+
+            <% unless native_app? %>
+              <div class="flex gap-4 items-center mt-3 pt-3 border-t border-outline-variant/40">
+                <%= render "shared/link_action", text: "Editar", url: edit_shift_path(shift) %>
+                <%= render "shared/link_action", text: "Remover", url: shift_path(shift), variant: :neutral,
+                      method: :delete, html: { class: "!text-error", form: { data: { turbo_confirm: "Remover esta categoria?" } } } %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

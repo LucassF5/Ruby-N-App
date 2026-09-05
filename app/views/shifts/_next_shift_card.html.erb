@@ -2,7 +2,7 @@
   <% if next_shift %>
     <div class="bg-primary text-on-primary rounded-2xl shadow-sm p-5 mb-6">
       <p class="text-caption-1 text-on-primary/70">Próximo plantão</p>
-      <p class="text-title-2 mt-1"><%= l(next_shift.date, format: :long) %></p>
+      <p class="text-title-2 mt-1"><%= pt_full_date(next_shift.date) %></p>
       <p class="text-callout text-on-primary/90 mt-0.5">
         <%= next_shift.start_time.strftime("%H:%M") %>–<%= next_shift.end_time.strftime("%H:%M") %>
         <% if next_shift.category.present? %> · <%= next_shift.category.name %><% end %>
