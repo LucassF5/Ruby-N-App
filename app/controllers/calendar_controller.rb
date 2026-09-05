@@ -1,9 +1,9 @@
 class CalendarController < ApplicationController
   def show
-    calendar = CalendarMonth.new(Current.user, month: params[:month])
-    @month = calendar.month
-    @weeks = calendar.weeks
-    @colors_by_day = calendar.colors_by_day
+    @calendar = CalendarMonth.new(Current.user, month: params[:month])
+    @month = @calendar.month
+    @weeks = @calendar.weeks
+    @colors_by_day = @calendar.colors_by_day
   end
 
   def day

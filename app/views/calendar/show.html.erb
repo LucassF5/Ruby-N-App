@@ -1,10 +1,7 @@
 <% content_for :title, "Calendário" %>
 
-<div class="flex justify-between items-center mb-4">
-  <h1 class="text-title-2 text-on-surface"><%= @month.strftime("%B %Y") %></h1>
-  <%= render "shared/link_action", text: "Gerenciar categorias", url: categories_path %>
-</div>
-
 <%= render "month_grid" %>
+
+<%= render "month_summary" %>
 
 <%= turbo_frame_tag "day_modal" %>
