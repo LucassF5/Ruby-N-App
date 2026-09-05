@@ -3,7 +3,10 @@
     <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-5 w-full max-w-sm flex flex-col gap-4">
       <div class="flex justify-between items-center">
         <h2 class="text-headline text-on-surface"><%= @date.strftime("%d/%m/%Y") %></h2>
-        <%= render "shared/link_action", text: "Fechar", url: calendar_path(month: @date.strftime("%Y-%m")), variant: :neutral %>
+        <%= link_to calendar_path(month: @date.strftime("%Y-%m")), "aria-label": "Fechar",
+              class: "flex items-center justify-center w-8 h-8 -mr-1 rounded-full text-on-surface-variant active:bg-surface-container-low transition-colors shrink-0" do %>
+          <span class="material-symbols-outlined !text-[20px]">close</span>
+        <% end %>
       </div>
 
       <% if @shifts.any? %>
