@@ -26,15 +26,15 @@ class ShiftTest < ActiveSupport::TestCase
     assert_not shift.valid?
   end
 
-  test "invalid when end_time is before start_time" do
-    shift = Shift.new(user: users(:jane), date: Date.new(2026, 9, 10), start_time: "14:00", end_time: "08:00")
-    assert_not shift.valid?
-    assert_includes shift.errors[:end_time], "deve ser depois do horário de início"
+  test "valid when end_time is before start_time, meaning the shift crosses midnight" do
+    shift = Shift.new(user: users(:jane), date: Date.new(2026, 9, 10), start_time: "22:00", end_time: "06:00")
+    assert shift.valid?
   end
 
   test "invalid when end_time equals start_time" do
     shift = Shift.new(user: users(:jane), date: Date.new(2026, 9, 10), start_time: "08:00", end_time: "08:00")
     assert_not shift.valid?
+    assert_includes shift.errors[:end_time], "não pode ser igual ao horário de início"
   end
 
   test "valid without location or notes" do

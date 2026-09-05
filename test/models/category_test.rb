@@ -31,14 +31,14 @@ class CategoryTest < ActiveSupport::TestCase
     assert_not category.valid?
   end
 
-  test "invalid when end_time is before start_time" do
-    category = Category.new(user: users(:jane), name: "Hospital X", color: "#4f46e5", start_time: "19:00", end_time: "07:00")
-    assert_not category.valid?
-    assert_includes category.errors[:end_time], "deve ser depois do horário de início"
+  test "valid when end_time is before start_time, meaning an overnight schedule" do
+    category = Category.new(user: users(:jane), name: "Noturno", color: "#4f46e5", start_time: "19:00", end_time: "07:00")
+    assert category.valid?
   end
 
   test "invalid when end_time equals start_time" do
     category = Category.new(user: users(:jane), name: "Hospital X", color: "#4f46e5", start_time: "07:00", end_time: "07:00")
     assert_not category.valid?
+    assert_includes category.errors[:end_time], "não pode ser igual ao horário de início"
   end
 end

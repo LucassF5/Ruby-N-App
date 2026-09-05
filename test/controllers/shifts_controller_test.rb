@@ -70,10 +70,18 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create shift with invalid times" do
     assert_no_difference("Shift.count") do
-      post shifts_url, params: { shift: { date: "2026-09-15", start_time: "17:00", end_time: "09:00" } }
+      post shifts_url, params: { shift: { date: "2026-09-15", start_time: "09:00", end_time: "09:00" } }
     end
 
     assert_response :unprocessable_entity
+  end
+
+  test "should create an overnight shift where end_time is before start_time" do
+    assert_difference("Shift.count") do
+      post shifts_url, params: { shift: { date: "2026-09-15", start_time: "22:00", end_time: "06:00" } }
+    end
+
+    assert_redirected_to root_url
   end
 
   test "should get edit" do
@@ -88,7 +96,7 @@ class ShiftsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not update shift with invalid times" do
-    patch shift_url(@shift), params: { shift: { start_time: "17:00", end_time: "09:00" } }
+    patch shift_url(@shift), params: { shift: { start_time: "09:00", end_time: "09:00" } }
     assert_response :unprocessable_entity
   end
 
