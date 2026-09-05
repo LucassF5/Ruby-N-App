@@ -14,7 +14,7 @@ class CalendarMonth
   end
 
   def total_hours
-    @shifts.sum { |shift| (shift.end_time - shift.start_time) / 1.hour }
+    @shifts.sum { |shift| shift_duration_in_hours(shift) }
   end
 
   def category_breakdown
@@ -48,5 +48,12 @@ class CalendarMonth
 
     def compute_shifts(user, month)
       user.shifts.where(date: month.beginning_of_month..month.end_of_month).includes(:category)
+    end
+
+    # end_time <= start_time means the shift crosses midnight into the next day.
+    def shift_duration_in_hours(shift)
+      duration = shift.end_time - shift.start_time
+      duration += 24.hours if duration <= 0
+      duration / 1.hour
     end
 end

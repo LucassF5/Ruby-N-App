@@ -6,13 +6,13 @@ class Category < ApplicationRecord
   validates :color, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true
-  validate :end_time_after_start_time
+  validate :end_time_not_equal_to_start_time
 
   private
 
-  def end_time_after_start_time
+  def end_time_not_equal_to_start_time
     return if start_time.blank? || end_time.blank?
 
-    errors.add(:end_time, "deve ser depois do horário de início") if end_time <= start_time
+    errors.add(:end_time, "não pode ser igual ao horário de início") if end_time == start_time
   end
 end

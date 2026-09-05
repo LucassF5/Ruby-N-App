@@ -26,10 +26,18 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create category with invalid times" do
     assert_no_difference("Category.count") do
-      post categories_url, params: { category: { name: "Hospital Y", color: "#f97316", start_time: "20:00", end_time: "08:00" } }
+      post categories_url, params: { category: { name: "Hospital Y", color: "#f97316", start_time: "08:00", end_time: "08:00" } }
     end
 
     assert_response :unprocessable_entity
+  end
+
+  test "should create an overnight category where end_time is before start_time" do
+    assert_difference("Category.count") do
+      post categories_url, params: { category: { name: "Noturno", color: "#f97316", start_time: "20:00", end_time: "08:00" } }
+    end
+
+    assert_redirected_to categories_url
   end
 
   test "should get edit" do
