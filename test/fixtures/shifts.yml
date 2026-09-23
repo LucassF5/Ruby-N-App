@@ -1,6 +1,6 @@
 one:
   user: jane
-  date: 2026-09-10
+  date: <%= 3.days.from_now.to_date %>
   start_time: "08:00"
   end_time: "14:00"
   location: Hospital Central
@@ -8,6 +8,6 @@ one:
 
 two:
   user: jane
-  date: 2026-09-12
+  date: <%= 5.days.from_now.to_date %>
   start_time: "20:00"
   end_time: "23:30"
