@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :shifts, dependent: :destroy
+  has_many :push_devices, as: :owner, class_name: "ApplicationPushDevice", dependent: :destroy
   has_one_attached :avatar
 
   normalizes :email_address, with: ->(email) { email.strip.downcase }

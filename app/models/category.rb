@@ -8,7 +8,16 @@ class Category < ApplicationRecord
   validates :end_time, presence: true
   validate :end_time_not_equal_to_start_time
 
+  after_create_commit :notify_category_created
+
   private
+
+  def notify_category_created
+    ApplicationPushNotification
+      .with_data(path: "/categories")
+      .new(title: "Categoria criada", body: "\"#{name}\" foi adicionada.")
+      .deliver_later_to(user.push_devices)
+  end
 
   def end_time_not_equal_to_start_time
     return if start_time.blank? || end_time.blank?
